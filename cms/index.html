@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+  <meta http-equiv="Pragma" content="no-cache">
+  <meta http-equiv="Expires" content="0">
+  <title>CMS Admin Portal | Portfolio Content Manager</title>
+  
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Inter', 'sans-serif'],
+            heading: ['Plus Jakarta Sans', 'sans-serif'],
+            handwritten: ['Caveat', 'cursive'],
+          }
+        }
+      }
+    }
+  </script>
+
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@600;700&family=Inter:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@600;700;800&display=swap" rel="stylesheet">
+
+  <style>
+    .shadow-offset { box-shadow: 4px 4px 0px #020617; }
+    .shadow-offset-lg { box-shadow: 6px 6px 0px #020617; }
+    .sticky-yellow { background-color: #fef08a; }
+    .sticky-mint { background-color: #a7f3d0; }
+    .sticky-lavender { background-color: #ddd6fe; }
+    .sticky-peach { background-color: #fde68a; }
+    .sticky-pink { background-color: #fbcfe8; }
+    .sticky-cyan { background-color: #bae6fd; }
+  </style>
+</head>
+<body class="bg-[#0f172a] text-slate-100 antialiased min-h-screen flex flex-col font-sans">
+
+  <!-- CMS Header Bar -->
+  <header class="sticky top-0 z-40 bg-slate-900 border-b-2 border-slate-700 px-6 py-4 shadow-md">
+    <div class="max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-4">
+      
+      <!-- Brand & Admin Title -->
+      <div class="flex items-center gap-3">
+        <div id="cms-header-badge" class="w-10 h-10 rounded-xl bg-amber-400 border-2 border-slate-950 font-extrabold flex items-center justify-center text-slate-950 font-heading text-lg shadow-sm">
+          CMS
+        </div>
+        <div>
+          <h1 id="cms-header-title" class="text-lg font-extrabold text-white font-heading tracking-tight">Portfolio CMS Admin Portal</h1>
+          <p id="cms-header-subtitle" class="text-xs text-slate-400 font-medium">Real-Time Content Synchronizer · Alex Rivera Portfolio</p>
+        </div>
+      </div>
+
+      <!-- Quick Action Controls -->
+      <div class="flex flex-wrap items-center gap-3">
+        <a id="view-live-btn" href="http://localhost:8765/index.html" target="_blank" onclick="window.open('http://localhost:8765/index.html', '_blank'); return false;" class="px-4 py-2 rounded-xl text-xs font-extrabold text-slate-950 bg-amber-400 border-2 border-slate-950 shadow-sm font-heading hover:bg-amber-300 transition-all flex items-center gap-1.5">
+          <span>View Live Site ➔</span>
+        </a>
+
+        <button id="clear-cache-btn" class="px-3.5 py-2 rounded-xl text-xs font-bold text-amber-300 bg-slate-800 border-2 border-slate-700 hover:bg-slate-700 hover:text-amber-200 transition-all flex items-center gap-1.5" title="Purge browser cache, unregister service workers, and bust asset cache">
+          🧹 Clear Cache
+        </button>
+
+        <!--
+        <button id="export-cms-btn" class="px-3.5 py-2 rounded-xl text-xs font-bold text-slate-200 bg-slate-800 border-2 border-slate-700 hover:bg-slate-700">
+          📥 Export JSON
+        </button>
+
+        <label class="px-3.5 py-2 rounded-xl text-xs font-bold text-slate-200 bg-slate-800 border-2 border-slate-700 hover:bg-slate-700 cursor-pointer">
+          📤 Import JSON
+          <input type="file" id="import-cms-file" accept=".json" class="hidden">
+        </label>
+
+        <button id="reset-cms-btn" class="px-3 py-2 rounded-xl text-xs font-bold text-rose-400 bg-slate-800 border-2 border-slate-700 hover:bg-rose-950">
+          Reset Default
+        </button>
+        -->
+      </div>
+
+    </div>
+  </header>
+
+  <!-- CMS Main Workspace -->
+  <main class="flex-1 max-w-7xl mx-auto w-full px-4 sm:px-6 lg:px-8 py-8">
+    
+    <!-- Navigation Manager Tabs -->
+    <div class="flex flex-wrap gap-2 mb-8 p-2 rounded-2xl bg-slate-900 border-2 border-slate-700 shadow-offset">
+      <button class="cms-tab active px-5 py-2.5 text-xs font-extrabold rounded-xl bg-amber-400 text-slate-950 font-heading transition-all" data-tab="cms-hero">
+        Hero Section
+      </button>
+      <button class="cms-tab px-5 py-2.5 text-xs font-extrabold rounded-xl bg-slate-800 text-slate-300 font-heading transition-all" data-tab="cms-nav">
+        🧭 Navbar &amp; Footer
+      </button>
+      <button class="cms-tab px-5 py-2.5 text-xs font-extrabold rounded-xl bg-slate-800 text-slate-300 font-heading transition-all" data-tab="cms-about">
+        About & Skills Matrix
+      </button>
+      <button class="cms-tab px-5 py-2.5 text-xs font-extrabold rounded-xl bg-slate-800 text-slate-300 font-heading transition-all" data-tab="cms-projects">
+        Projects Inventory (12)
+      </button>
+      <button class="cms-tab px-5 py-2.5 text-xs font-extrabold rounded-xl bg-slate-800 text-slate-300 font-heading transition-all" data-tab="cms-workflow">
+        Delivery Workflow
+      </button>
+      <button class="cms-tab px-5 py-2.5 text-xs font-extrabold rounded-xl bg-slate-800 text-slate-300 font-heading transition-all" data-tab="cms-contact">
+        Contact &amp; Profile
+      </button>
+      <button class="cms-tab px-5 py-2.5 text-xs font-extrabold rounded-xl bg-slate-800 text-slate-300 font-heading transition-all flex items-center gap-2" data-tab="cms-leads">
+        📥 Leads Form
+        <span id="leads-new-badge" class="hidden px-1.5 py-0.5 rounded-full bg-rose-500 text-white text-[9px] font-extrabold leading-none">0</span>
+      </button>
+    </div>
+
+    <!-- Tab 1: Hero Section Manager -->
+    <section id="cms-hero" class="cms-section space-y-6">
+      <div class="p-8 rounded-3xl bg-slate-900 border-2 border-slate-700 shadow-offset">
+        <h2 class="text-xl font-extrabold text-white font-heading mb-2">Hero Section Manager</h2>
+        <p class="text-xs text-slate-400 mb-6">Manage the main headline, sub-headline, status badge, and impact counters.</p>
+
+        <form id="hero-cms-form"></form>
+      </div>
+    </section>
+
+    <!-- Tab 1.5: Navbar Menu Manager (CRUD) -->
+    <section id="cms-nav" class="cms-section hidden space-y-6">
+      <div class="p-8 rounded-3xl bg-slate-900 border-2 border-slate-700 shadow-offset">
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
+          <div>
+            <h2 class="text-xl font-extrabold text-white font-heading">Navbar Navigation Menu (CRUD) &amp; Footer</h2>
+            <p class="text-xs text-slate-400 mt-1">Manage, reorder, show/hide, add, or delete links in the header navbar and customize the bottom footer copyright.</p>
+          </div>
+          <div class="flex items-center gap-2">
+            <button id="nav-reset-btn" type="button" class="px-3.5 py-2 rounded-xl text-xs font-bold text-slate-300 bg-slate-800 border-2 border-slate-700 hover:bg-slate-700 transition-all">
+              ↺ Reset Default
+            </button>
+            <button id="nav-add-btn" type="button" class="px-4 py-2 rounded-xl text-xs font-extrabold text-slate-950 bg-amber-400 border-2 border-slate-950 shadow-sm font-heading hover:bg-amber-300 transition-all flex items-center gap-1.5">
+              <span>+ Add Menu Item</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Add / Edit Menu Item Form Panel (toggleable) -->
+        <div id="nav-item-form-panel" class="hidden mb-6 p-6 rounded-2xl bg-slate-800/90 border-2 border-amber-400/80 space-y-4">
+          <div class="flex items-center justify-between">
+            <h3 id="nav-form-title" class="text-sm font-extrabold text-amber-300 font-heading">Add New Menu Item</h3>
+            <button type="button" id="nav-form-close-btn" class="text-xs font-bold text-slate-400 hover:text-white px-2.5 py-1 rounded-lg bg-slate-700/60">✕ Cancel</button>
+          </div>
+          <form id="nav-item-form" class="space-y-4">
+            <input type="hidden" id="nav-edit-id" value="">
+            <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+              <div>
+                <label class="block text-xs font-bold text-slate-300 mb-1">Menu Label *</label>
+                <input type="text" id="nav-input-label" required placeholder="e.g. Playground" class="w-full px-3.5 py-2.5 rounded-xl bg-slate-900 border-2 border-slate-700 text-white text-xs focus:border-amber-400 outline-none">
+              </div>
+              <div>
+                <label class="block text-xs font-bold text-slate-300 mb-1">Link URL / Section Anchor *</label>
+                <input type="text" id="nav-input-url" required placeholder="e.g. #playground or https://..." class="w-full px-3.5 py-2.5 rounded-xl bg-slate-900 border-2 border-slate-700 text-white text-xs focus:border-amber-400 outline-none">
+              </div>
+              <div>
+                <label class="block text-xs font-bold text-slate-300 mb-1">Target Window</label>
+                <select id="nav-input-target" class="w-full px-3.5 py-2.5 rounded-xl bg-slate-900 border-2 border-slate-700 text-white text-xs focus:border-amber-400 outline-none">
+                  <option value="_self">Same Window (_self)</option>
+                  <option value="_blank">New Tab (_blank)</option>
+                </select>
+              </div>
+            </div>
+            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pt-2">
+              <label class="inline-flex items-center gap-2 cursor-pointer text-xs font-bold text-slate-300">
+                <input type="checkbox" id="nav-input-visible" checked class="w-4 h-4 rounded text-amber-400 focus:ring-0 bg-slate-900 border-slate-700">
+                <span>Active & Visible in Navbar</span>
+              </label>
+              <button type="submit" id="nav-submit-btn" class="px-6 py-2.5 rounded-xl text-xs font-extrabold text-slate-950 bg-amber-400 hover:bg-amber-300 border-2 border-slate-950 shadow-offset font-heading transition-all">
+                Save Item ✦
+              </button>
+            </div>
+          </form>
+        </div>
+
+        <!-- Menu Items List -->
+        <div id="nav-items-container" class="space-y-3">
+          <!-- Dynamically populated via cms.js -->
+        </div>
+
+        <!-- Live Preview Bar -->
+        <div class="mt-8 pt-6 border-t-2 border-slate-800">
+          <div class="flex items-center justify-between mb-3">
+            <span class="text-xs font-extrabold text-slate-400 uppercase tracking-wider">Live Preview of Header Navigation</span>
+            <span class="text-[11px] text-slate-500">Updates live as you edit or reorder</span>
+          </div>
+          <div class="h-16 rounded-2xl bg-slate-900/90 border-2 border-slate-700 shadow-offset px-4 sm:px-6 flex items-center justify-between overflow-x-auto">
+            <div class="flex items-center gap-3 shrink-0">
+              <div id="nav-preview-initials" class="w-9 h-9 rounded-xl bg-amber-400 border-2 border-slate-950 text-slate-950 font-extrabold flex items-center justify-center text-sm font-heading shadow-sm">AR</div>
+              <div>
+                <div class="flex items-center gap-1.5">
+                  <span id="nav-preview-name" class="text-sm font-bold text-white font-heading">Alex Rivera</span>
+                  <span id="nav-preview-tagline" class="font-handwritten text-xs text-amber-300 hidden sm:inline">✦ IT PM</span>
+                </div>
+                <span class="text-[10px] text-slate-400 flex items-center gap-1">
+                  <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span>
+                  <span id="nav-preview-status">Open to Strategic Work</span>
+                </span>
+              </div>
+            </div>
+            <nav id="nav-preview-links" class="flex items-center gap-6 text-xs font-bold text-slate-300 mx-4">
+              <!-- Live preview links rendered here -->
+            </nav>
+            <div class="flex items-center gap-2 shrink-0">
+              <span class="p-1.5 rounded-xl bg-slate-800 border-2 border-slate-700 text-amber-300 text-xs">🌙</span>
+              <span class="px-3.5 py-1.5 rounded-xl text-xs font-extrabold text-slate-950 bg-amber-400 border-2 border-slate-950 shadow-offset font-heading">Let's Talk ✦</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Footer Copyright & Navigation Settings -->
+        <div class="mt-8 pt-6 border-t-2 border-slate-800 space-y-4">
+          <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+            <div>
+              <h3 class="text-sm font-extrabold text-amber-300 font-heading flex items-center gap-2">
+                <span>©️ Footer Copyright &amp; Branding</span>
+              </h3>
+              <p class="text-xs text-slate-400">Manage the bottom copyright notice and branding text across all pages</p>
+            </div>
+            <button type="button" id="save-footer-btn" class="px-4 py-2 rounded-xl text-xs font-extrabold text-slate-950 bg-amber-400 hover:bg-amber-300 border-2 border-slate-950 shadow-offset font-heading transition-all">
+              Publish Footer ✦
+            </button>
+          </div>
+
+          <div class="p-5 rounded-2xl bg-slate-900 border-2 border-slate-700 space-y-4 shadow-sm">
+            <div>
+              <div class="flex items-center justify-between mb-1.5 flex-wrap gap-2">
+                <label class="block text-xs font-bold text-slate-300 uppercase tracking-wider">Footer Copyright Notice</label>
+                <div class="flex items-center gap-2">
+                  <button type="button" id="footer-template-default" class="text-[11px] font-bold px-2.5 py-1 rounded-lg bg-slate-800 hover:bg-slate-700 text-amber-300 border border-slate-600 transition-colors">
+                    ↺ Reset with Current Name
+                  </button>
+                  <button type="button" id="footer-insert-year" class="text-[11px] font-bold px-2.5 py-1 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 border border-slate-600 transition-colors">
+                    📅 Insert Current Year
+                  </button>
+                </div>
+              </div>
+              <input type="text" id="footer-copyright-input" placeholder="e.g. © 2026 Alex Rivera · IT Project Manager &amp; Website Specialist. Made with ✦" class="w-full px-4 py-3 rounded-xl bg-slate-800 border-2 border-slate-700 text-white text-sm focus:border-amber-400 outline-none">
+              <span class="text-[11px] text-slate-500 mt-1 block">Displayed at the bottom footer of the live portfolio website and mobile views.</span>
+            </div>
+
+            <!-- Footer Live Preview -->
+            <div class="pt-3 border-t border-slate-800">
+              <div class="flex items-center justify-between mb-2">
+                <span class="text-[11px] font-extrabold text-slate-400 uppercase tracking-wider">Live Preview of Footer</span>
+                <span class="text-[10px] text-slate-500">Updates live as you type</span>
+              </div>
+              <div class="p-4 rounded-xl bg-slate-950 border-2 border-slate-800 flex flex-col sm:flex-row items-center justify-between text-xs text-slate-400 gap-3">
+                <div id="footer-preview-text" class="text-slate-300 font-mono text-xs break-all">
+                  © 2026 Alex Rivera · IT Project Manager &amp; Website Specialist. Made with ✦
+                </div>
+                <div class="flex items-center gap-4 text-xs font-bold text-slate-400 shrink-0">
+                  <span class="hover:text-amber-300 transition-colors cursor-default">Back to Top ↑</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- Tab 2: About & Skills Manager -->
+    <section id="cms-about" class="cms-section hidden space-y-6">
+      <div class="p-8 rounded-3xl bg-slate-900 border-2 border-slate-700 shadow-offset">
+        <h2 class="text-xl font-extrabold text-white font-heading mb-2">About & Skills Matrix Manager</h2>
+        <p class="text-xs text-slate-400 mb-6">Edit bio paragraphs and add, edit, or remove sticky note skill chips.</p>
+
+        <form id="about-cms-form"></form>
+      </div>
+    </section>
+
+    <!-- Tab 3: Projects Inventory (CRUD) -->
+    <section id="cms-projects" class="cms-section hidden space-y-6">
+      <div class="p-8 rounded-3xl bg-slate-900 border-2 border-slate-700 shadow-offset">
+        <div id="projects-cms-list"></div>
+      </div>
+    </section>
+
+    <!-- Tab 4: Delivery Workflow Manager -->
+    <section id="cms-workflow" class="cms-section hidden space-y-6">
+      <div class="p-8 rounded-3xl bg-slate-900 border-2 border-slate-700 shadow-offset">
+        <h2 class="text-xl font-extrabold text-white font-heading mb-2">5-Stage IT Delivery Blueprint Manager</h2>
+        <p class="text-xs text-slate-400 mb-6">Customize step titles and descriptions for your project governance framework.</p>
+
+        <form id="workflow-cms-form"></form>
+      </div>
+    </section>
+
+    <!-- Tab 5: Contact & Profile Settings -->
+    <section id="cms-contact" class="cms-section hidden space-y-6">
+      <div class="p-8 rounded-3xl bg-slate-900 border-2 border-slate-700 shadow-offset">
+        <h2 class="text-xl font-extrabold text-white font-heading mb-2">Contact &amp; Profile Settings</h2>
+        <p class="text-xs text-slate-400 mb-6">Update contact headline, mailto address, and response guarantee text.</p>
+
+        <form id="contact-cms-form"></form>
+      </div>
+    </section>
+
+    <!-- Tab 6: Leads Form Manager -->
+    <section id="cms-leads" class="cms-section hidden space-y-6">
+      <div class="p-8 rounded-3xl bg-slate-900 border-2 border-slate-700 shadow-offset">
+
+        <!-- Header Row -->
+        <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 mb-6">
+          <div>
+            <h2 class="text-xl font-extrabold text-white font-heading mb-1">📥 Leads Form Manager</h2>
+            <p class="text-xs text-slate-400">Incoming messages from the Direct Message form on your portfolio.</p>
+          </div>
+          <div class="flex items-center gap-2">
+            <button id="leads-inject-btn" class="px-3.5 py-2 rounded-xl text-xs font-bold text-emerald-400 bg-slate-800 border-2 border-slate-700 hover:bg-emerald-950 transition-all">
+              🧪 Inject Test Lead
+            </button>
+            <button id="leads-refresh-btn" class="px-3.5 py-2 rounded-xl text-xs font-bold text-slate-200 bg-slate-800 border-2 border-slate-700 hover:bg-slate-700 transition-all">
+              🔄 Refresh
+            </button>
+            <button id="leads-clear-read-btn" class="px-3.5 py-2 rounded-xl text-xs font-bold text-rose-400 bg-slate-800 border-2 border-slate-700 hover:bg-rose-950 transition-all">
+              🗑 Clear All Read
+            </button>
+          </div>
+        </div>
+
+        <!-- Status Filter Tabs -->
+        <div class="flex flex-wrap gap-2 mb-6">
+          <button class="leads-filter-btn active-filter px-4 py-2 rounded-xl text-xs font-extrabold font-heading bg-amber-400 text-slate-950 border-2 border-slate-950 transition-all" data-filter="all">
+            All Leads <span id="count-all" class="ml-1 px-1.5 py-0.5 rounded-full bg-slate-950/20 text-[9px] font-extrabold">0</span>
+          </button>
+          <button class="leads-filter-btn px-4 py-2 rounded-xl text-xs font-extrabold font-heading bg-slate-800 text-slate-300 border-2 border-slate-700 transition-all flex items-center gap-1.5" data-filter="new">
+            <span class="w-2 h-2 rounded-full bg-rose-400 inline-block"></span>
+            New <span id="count-new" class="ml-0.5 px-1.5 py-0.5 rounded-full bg-rose-500/20 text-rose-300 text-[9px] font-extrabold">0</span>
+          </button>
+          <button class="leads-filter-btn px-4 py-2 rounded-xl text-xs font-extrabold font-heading bg-slate-800 text-slate-300 border-2 border-slate-700 transition-all flex items-center gap-1.5" data-filter="read">
+            <span class="w-2 h-2 rounded-full bg-slate-400 inline-block"></span>
+            Read <span id="count-read" class="ml-0.5 px-1.5 py-0.5 rounded-full bg-slate-500/20 text-slate-300 text-[9px] font-extrabold">0</span>
+          </button>
+          <button class="leads-filter-btn px-4 py-2 rounded-xl text-xs font-extrabold font-heading bg-slate-800 text-slate-300 border-2 border-slate-700 transition-all flex items-center gap-1.5" data-filter="followup">
+            <span class="w-2 h-2 rounded-full bg-amber-400 inline-block"></span>
+            Follow Up <span id="count-followup" class="ml-0.5 px-1.5 py-0.5 rounded-full bg-amber-500/20 text-amber-300 text-[9px] font-extrabold">0</span>
+          </button>
+        </div>
+
+        <!-- Leads Table -->
+        <div id="leads-table-container">
+          <!-- Rendered by cms.js -->
+        </div>
+
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Project Edit Modal -->
+  <div id="cms-modal" class="hidden fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/80 backdrop-blur-md">
+    <div class="w-full max-w-3xl" id="cms-modal-body"></div>
+  </div>
+
+  <script src="./cms.js?v=20260915_v4"></script>
+</body>
+</html>

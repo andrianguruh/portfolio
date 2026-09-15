@@ -1,0 +1,395 @@
+/* Creative Artsy / Figma Canvas Scrapbook Styles */
+
+@import url('https://fonts.googleapis.com/css2?family=Caveat:wght@600;700&family=Inter:wght@300;400;500;600;700&family=Plus+Jakarta+Sans:wght@600;700;800&display=swap');
+
+:root {
+  --bg-canvas: #0f172a;
+  --bg-card: #1e293b;
+  --bg-card-hover: #26334d;
+  --border-color: #334155;
+  --border-solid: #475569;
+  --text-main: #f8fafc;
+  --text-muted: #94a3b8;
+  --accent-yellow: #fef08a;
+  --accent-mint: #a7f3d0;
+  --accent-lavender: #ddd6fe;
+  --accent-peach: #fde68a;
+  --accent-pink: #fbcfe8;
+  --accent-cyan: #7dd3fc;
+  --accent-emerald: #10b981;
+  --offset-shadow: 4px 4px 0px #020617;
+  --offset-shadow-lg: 6px 6px 0px #020617;
+  --highlight-color: rgba(254, 240, 138, 0.35);
+
+  /* Card Header Frame — adaptive gradient variables */
+  --card-header-mid: #1e293b;
+  --card-header-end: #0f172a;
+  --card-header-border: #334155;
+  --card-header-text: #f8fafc;
+  --card-header-muted: #94a3b8;
+  --card-header-icon-bg: rgba(15, 23, 42, 0.8);
+  --card-header-icon-border: #334155;
+  --card-header-icon-color: #f8fafc;
+}
+
+html[data-theme="light"] {
+  --bg-canvas: #faf9f5;
+  --bg-card: #ffffff;
+  --bg-card-hover: #f8fafc;
+  --border-color: #0f172a;
+  --border-solid: #0f172a;
+  --text-main: #0f172a;
+  --text-muted: #475569;
+  --accent-yellow: #fef08a;
+  --accent-mint: #a7f3d0;
+  --accent-lavender: #ddd6fe;
+  --accent-peach: #fde68a;
+  --accent-pink: #fbcfe8;
+  --accent-cyan: #bae6fd;
+  --accent-emerald: #059669;
+  --offset-shadow: 4px 4px 0px #0f172a;
+  --offset-shadow-lg: 6px 6px 0px #0f172a;
+  --highlight-color: rgba(253, 224, 71, 0.5);
+
+  /* Card Header Frame — light mode overrides */
+  --card-header-mid: #f1f5f9;
+  --card-header-end: #e2e8f0;
+  --card-header-border: #cbd5e1;
+  --card-header-text: #0f172a;
+  --card-header-muted: #475569;
+  --card-header-icon-bg: #ffffff;
+  --card-header-icon-border: #0f172a;
+  --card-header-icon-color: #0f172a;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  scroll-behavior: smooth;
+  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+}
+
+h1, h2, h3, h4, h5, h6, .font-heading {
+  font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+}
+
+.font-handwritten {
+  font-family: 'Caveat', cursive, sans-serif;
+}
+
+body {
+  background-color: var(--bg-canvas);
+  color: var(--text-main);
+  transition: background-color 0.35s ease, color 0.35s ease;
+  overflow-x: hidden;
+  background-image: radial-gradient(rgba(255, 255, 255, 0.06) 1px, transparent 1px);
+  background-size: 24px 24px;
+}
+
+/* ============================================
+   LIGHT THEME — Comprehensive Overrides
+   All rules use !important to win over
+   Tailwind's inline utility classes
+============================================ */
+html[data-theme="light"] body {
+  background-color: #faf9f5 !important;
+  color: #0f172a !important;
+  background-image: radial-gradient(rgba(0, 0, 0, 0.07) 1px, transparent 1px) !important;
+}
+
+/* Global text overrides */
+html[data-theme="light"] .text-white,
+html[data-theme="light"] .text-slate-100,
+html[data-theme="light"] .text-slate-200,
+html[data-theme="light"] .text-slate-300 {
+  color: #1e293b !important;
+}
+html[data-theme="light"] h1,
+html[data-theme="light"] h2,
+html[data-theme="light"] h3,
+html[data-theme="light"] h4 {
+  color: #0f172a !important;
+}
+html[data-theme="light"] .text-slate-400,
+html[data-theme="light"] .text-slate-500 {
+  color: #475569 !important;
+}
+html[data-theme="light"] .text-amber-300 {
+  color: #b45309 !important;
+}
+
+/* Sections — force white/off-white backgrounds */
+html[data-theme="light"] section,
+html[data-theme="light"] #home,
+html[data-theme="light"] #about,
+html[data-theme="light"] #workflow,
+html[data-theme="light"] #projects,
+html[data-theme="light"] #playground,
+html[data-theme="light"] #contact {
+  background-color: transparent !important;
+}
+
+/* Header navbar */
+html[data-theme="light"] header > div > div {
+  background-color: rgba(255, 255, 255, 0.95) !important;
+  border-color: #cbd5e1 !important;
+  /* box-shadow: 4px 4px 0px #0f172a !important; */
+}
+html[data-theme="light"] header nav a {
+  color: #334155 !important;
+}
+html[data-theme="light"] header nav a:hover {
+  color: #0f172a !important;
+}
+html[data-theme="light"] #theme-toggle-btn {
+  background-color: #f1f5f9 !important;
+  border-color: #cbd5e1 !important;
+}
+
+/* Slate-800 / Slate-900 panels → white in light mode */
+html[data-theme="light"] .bg-slate-900,
+html[data-theme="light"] .bg-slate-800,
+html[data-theme="light"] .bg-slate-900\/90,
+html[data-theme="light"] .bg-slate-800\/80 {
+  background-color: #ffffff !important;
+  color: #0f172a !important;
+}
+html[data-theme="light"] .border-slate-700,
+html[data-theme="light"] .border-slate-800 {
+  border-color: #cbd5e1 !important;
+}
+
+/* Cards */
+html[data-theme="light"] .canvas-card {
+  background-color: #ffffff !important;
+  border-color: #0f172a !important;
+  box-shadow: 4px 4px 0px #0f172a !important;
+  color: #0f172a !important;
+}
+html[data-theme="light"] .canvas-card:hover {
+  box-shadow: 6px 6px 0px #0f172a !important;
+}
+
+/* Featured Technical Projects Card font color overrides in Light Mode */
+html[data-theme="light"] #projects-grid .canvas-card .card-impact-text {
+  color: rgb(255 255 255 / var(--tw-text-opacity, 1)) !important;
+}
+html[data-theme="light"] #projects-grid .canvas-card h3 {
+  color: rgb(252 211 77 / var(--tw-text-opacity, 1)) !important;
+  transition: color 0.2s ease !important;
+}
+html[data-theme="light"] #projects-grid .canvas-card:hover h3 {
+  color: rgb(255 255 255 / var(--tw-text-opacity, 1)) !important;
+}
+
+/* Tech stack badges inside cards */
+html[data-theme="light"] .canvas-card .bg-slate-800 {
+  background-color: #f1f5f9 !important;
+  border-color: #94a3b8 !important;
+  color: #334155 !important;
+}
+
+/* Modal */
+html[data-theme="light"] .modal-content {
+  background-color: #ffffff !important;
+  border-color: #0f172a !important;
+  color: #0f172a !important;
+}
+html[data-theme="light"] .modal-content .bg-slate-900 {
+  background-color: #f8fafc !important;
+  color: #0f172a !important;
+}
+html[data-theme="light"] .modal-content .bg-slate-800 {
+  background-color: #f1f5f9 !important;
+  color: #334155 !important;
+}
+
+/* Filter tabs */
+html[data-theme="light"] .filter-tab:not(.active) {
+  background-color: #f1f5f9 !important;
+  color: #0f172a !important;
+  border-color: #cbd5e1 !important;
+}
+html[data-theme="light"] .filter-tab.active {
+  background-color: #0f172a !important;
+  color: #ffffff !important;
+  box-shadow: 4px 4px 0px #64748b !important;
+}
+
+/* Extra colored-text overrides missing from generic rules */
+html[data-theme="light"] .text-sky-300 { color: #0369a1 !important; }
+html[data-theme="light"] .text-emerald-300 { color: #047857 !important; }
+html[data-theme="light"] .text-amber-400 { color: #92400e !important; }
+html[data-theme="light"] .text-emerald-400 { color: #047857 !important; }
+html[data-theme="light"] .text-sky-400 { color: #0369a1 !important; }
+
+/* Form inputs */
+html[data-theme="light"] input,
+html[data-theme="light"] textarea,
+html[data-theme="light"] select {
+  background-color: #f8fafc !important;
+  color: #0f172a !important;
+  border-color: #94a3b8 !important;
+}
+
+/* Offset Brutalist Shadows */
+.shadow-offset {
+  box-shadow: var(--offset-shadow);
+}
+
+.shadow-offset-lg {
+  box-shadow: var(--offset-shadow-lg);
+}
+
+/* Canvas Scrapbook Cards */
+.canvas-card {
+  background-color: var(--bg-card);
+  border: 2px solid var(--border-color);
+  box-shadow: var(--offset-shadow);
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.canvas-card:hover {
+  transform: translateY(-4px) rotate(-0.5deg);
+  box-shadow: var(--offset-shadow-lg);
+  border-color: var(--text-main);
+}
+
+/* Marker Underline Highlight */
+.marker-highlight {
+  position: relative;
+  display: inline-block;
+  z-index: 1;
+}
+
+.marker-highlight::after {
+  content: '';
+  position: absolute;
+  bottom: 2px;
+  left: -6px;
+  right: -6px;
+  height: 40%;
+  background-color: var(--highlight-color);
+  z-index: -1;
+  transform: rotate(-1deg);
+  border-radius: 4px;
+}
+
+/* Wobbly Tape Strip */
+.tape-strip {
+  position: absolute;
+  top: -12px;
+  left: 50%;
+  transform: translateX(-50%) rotate(-2deg);
+  width: 90px;
+  height: 24px;
+  background: rgba(255, 255, 255, 0.25);
+  backdrop-filter: blur(4px);
+  border: 1px dashed rgba(0, 0, 0, 0.2);
+  z-index: 20;
+}
+
+[data-theme="light"] .tape-strip {
+  background: rgba(0, 0, 0, 0.08);
+}
+
+/* Sticky Notes */
+.sticky-note {
+  border: 2px solid #0f172a;
+  box-shadow: 3px 3px 0px #0f172a;
+  color: #0f172a;
+  transition: all 0.2s ease;
+}
+
+.sticky-note:hover {
+  transform: translateY(-4px) scale(1.03) rotate(0deg) !important;
+  box-shadow: 5px 5px 0px #0f172a;
+}
+
+.sticky-yellow { background-color: var(--accent-yellow); }
+.sticky-mint { background-color: var(--accent-mint); }
+.sticky-lavender { background-color: var(--accent-lavender); }
+.sticky-peach { background-color: var(--accent-peach); }
+.sticky-pink { background-color: var(--accent-pink); }
+.sticky-cyan { background-color: var(--accent-cyan); }
+
+/* Scroll Reveals */
+.fade-up-element {
+  opacity: 0;
+  transform: translateY(30px);
+  transition: opacity 0.7s cubic-bezier(0.16, 1, 0.3, 1), transform 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+  will-change: opacity, transform;
+}
+
+.fade-up-element.is-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.delay-100 { transition-delay: 100ms; }
+.delay-200 { transition-delay: 200ms; }
+.delay-300 { transition-delay: 300ms; }
+.delay-400 { transition-delay: 400ms; }
+.delay-500 { transition-delay: 500ms; }
+
+/* Filter Tabs Active State */
+.filter-tab.active {
+  background-color: var(--text-main);
+  color: var(--bg-canvas);
+  box-shadow: var(--offset-shadow);
+}
+
+/* Modal Animations */
+.modal-backdrop {
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s ease;
+}
+
+.modal-backdrop.is-open {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.modal-content {
+  transform: scale(0.94) translateY(20px);
+  transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.modal-backdrop.is-open .modal-content {
+  transform: scale(1) translateY(0);
+}
+
+/* Secondary Button Amber Hover */
+.hover-amber-btn:hover {
+  background-color: #fcd34d !important; /* amber-300 */
+  color: #0f172a !important; /* slate-950 */
+  border-color: #0f172a !important;
+  transform: translateY(-4px) !important;
+  box-shadow: var(--offset-shadow-lg) !important;
+}
+.hover-amber-btn:hover .icon-amber {
+  color: #0f172a !important;
+}
+
+html[data-theme="light"] .hover-amber-btn:hover,
+html[data-theme="dark"] .hover-amber-btn:hover {
+  background-color: #fcd34d !important;
+  color: #0f172a !important;
+  border-color: #0f172a !important;
+}
+
+.icon-amber {
+  color: #b45309; /* amber-600 */
+}
+html[data-theme="light"] .icon-amber {
+  color: #b45309 !important;
+}
+html[data-theme="dark"] .icon-amber {
+  color: #fcd34d !important;
+}
+

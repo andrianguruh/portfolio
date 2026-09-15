@@ -1,0 +1,608 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Alex Rivera | IT Project Manager & Website Specialist</title>
+  <meta name="description" content="Creative Artsy Portfolio of IT Project Manager & Website Specialist bridging technical execution and strategic business needs. Agile, Scrum, API Integrations, Web Architecture.">
+  
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: ['selector', '[data-theme="dark"]'],
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Inter', 'sans-serif'],
+            heading: ['Plus Jakarta Sans', 'sans-serif'],
+            handwritten: ['Caveat', 'cursive'],
+          }
+        }
+      }
+    }
+  </script>
+
+  <!-- Custom Creative Artsy Styles -->
+  <link rel="stylesheet" href="./assets/css/styles.css?v=5" id="portfolio-styles">
+
+  <!-- Apply saved theme, cache buster & instant CMS Profile sync (Zero-Flash) -->
+  <script>
+    (function() {
+      // 1. Saved theme
+      var saved = localStorage.getItem('portfolio-theme') || 'light';
+      document.documentElement.setAttribute('data-theme', saved);
+
+      // 2. Cache buster styles
+      var urlParams = new URLSearchParams(window.location.search);
+      var ver = urlParams.get('v') || localStorage.getItem('portfolio_cache_version');
+      if (ver) {
+        var styleLink = document.getElementById('portfolio-styles');
+        if (styleLink) styleLink.href = './assets/css/styles.css?v=' + ver;
+      }
+
+      // 3. Pre-Paint Instant Profile Name Synchronizer (prevents flash of "Alex Rivera")
+      try {
+        var raw = localStorage.getItem('portfolio_cms_content');
+        if (raw) {
+          var data = JSON.parse(raw);
+          if (data && data.profile && data.profile.name) {
+            var name = data.profile.name;
+            var initials = name.trim().split(/\s+/).map(function(n) { return n[0]; }).join('').substring(0, 2).toUpperCase() || 'AR';
+            var tagline = data.profile.titleTag ? ('✦ ' + data.profile.titleTag) : '✦ IT PM';
+            document.title = name + ' | IT Project Manager & Website Specialist';
+
+            // Intercept and swap text content the microsecond nodes enter DOM before browser paint
+            var observer = new MutationObserver(function() {
+              var elName = document.getElementById('header-logo-name');
+              if (elName && elName.textContent !== name) elName.textContent = name;
+
+              var elInit = document.getElementById('header-logo-initials');
+              if (elInit && elInit.textContent !== initials) elInit.textContent = initials;
+
+              var elTag = document.getElementById('header-logo-tagline');
+              if (elTag && elTag.textContent !== tagline) elTag.textContent = tagline;
+
+              var elHero = document.getElementById('hero-handwritten-intro');
+              if (elHero && !elHero.dataset.synced) {
+                elHero.textContent = '✦ my name is ' + name + ' ✏️';
+                elHero.dataset.synced = '1';
+              }
+
+              var footerText = (cfg.footer && cfg.footer.copyright)
+                ? cfg.footer.copyright
+                : ('© 2026 ' + name + ' · IT Project Manager & Website Specialist. Made with ✦');
+              var elFoot = document.getElementById('footer-copyright');
+              if (elFoot && elFoot.textContent !== footerText) {
+                elFoot.textContent = footerText;
+              }
+            });
+
+            observer.observe(document.documentElement, { childList: true, subtree: true });
+
+            document.addEventListener('DOMContentLoaded', function() {
+              observer.disconnect();
+            });
+          }
+        }
+      } catch(e) {}
+    })();
+  </script>
+</head>
+<body class="antialiased selection:bg-amber-300 selection:text-slate-950 min-h-screen flex flex-col">
+
+  <!-- 1. Header / Navbar -->
+  <header class="fixed top-4 left-0 right-0 z-40 px-4 sm:px-8">
+    <div class="max-w-7xl mx-auto h-16 rounded-2xl bg-slate-900/90 border-2 border-slate-700 shadow-offset backdrop-blur-md px-4 sm:px-6 flex items-center justify-between">
+      
+      <!-- Brand Logo / Text -->
+      <a href="#home" class="flex items-center gap-3 group">
+        <div id="header-logo-initials" class="w-9 h-9 rounded-xl bg-amber-400 border-2 border-slate-950 text-slate-950 font-extrabold flex items-center justify-center text-base shadow-sm group-hover:rotate-6 transition-transform font-heading">
+          AR
+        </div>
+        <div>
+          <div class="flex items-center gap-2">
+            <span id="header-logo-name" class="text-base font-bold text-white font-heading tracking-tight group-hover:text-amber-300 transition-colors">
+              Alex Rivera
+            </span>
+            <span id="header-logo-tagline" class="font-handwritten text-sm text-amber-300 hidden sm:inline">✦ IT PM</span>
+          </div>
+          <span class="text-[11px] text-slate-400 font-medium tracking-wide flex items-center gap-1.5">
+            <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+            Open to Strategic Work
+          </span>
+        </div>
+      </a>
+
+      <!-- Desktop Navigation Links -->
+      <nav id="desktop-nav" class="hidden md:flex items-center gap-6 text-xs font-bold text-slate-300">
+        <a href="#home" class="hover:text-amber-300 transition-colors py-1">Home</a>
+        <a href="#about" class="hover:text-amber-300 transition-colors py-1">About & Skills</a>
+        <a href="#workflow" class="hover:text-amber-300 transition-colors py-1">PM Workflow</a>
+        <a href="#projects" class="hover:text-amber-300 transition-colors py-1">Projects</a>
+        <a href="#playground" class="hover:text-amber-300 transition-colors py-1">Playground</a>
+        <a href="#contact" class="hover:text-amber-300 transition-colors py-1">Contact</a>
+      </nav>
+
+      <!-- Controls: Theme Switch & CTA -->
+      <div class="flex items-center gap-3">
+        <!-- Theme Toggle Button -->
+        <button id="theme-toggle-btn" aria-label="Toggle Theme" class="p-2 rounded-xl bg-slate-800 border-2 border-slate-700 text-slate-300 hover:border-amber-300 transition-all shadow-sm">
+          <span id="theme-toggle-icon">
+            <svg class="w-5 h-5 text-amber-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"></path>
+            </svg>
+          </span>
+        </button>
+
+        <!-- CTA Button -->
+        <a href="#contact" class="hidden sm:inline-flex items-center gap-1.5 px-4 py-2 rounded-xl text-xs font-extrabold text-slate-950 bg-amber-400 hover:bg-amber-300 border-2 border-slate-950 shadow-offset transition-all">
+          <span>Let's Talk ✦</span>
+        </a>
+
+        <!-- Mobile Menu Button -->
+        <button id="mobile-menu-btn" aria-label="Open Menu" class="md:hidden p-2 rounded-xl bg-slate-800 border-2 border-slate-700 text-slate-300">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+          </svg>
+        </button>
+      </div>
+
+    </div>
+
+    <!-- Mobile Navigation Drawer -->
+    <div id="mobile-menu-drawer" class="hidden md:hidden bg-slate-900 border-2 border-slate-700 rounded-2xl mt-2 px-6 py-5 space-y-3 text-sm font-bold shadow-offset">
+      <a href="#home" class="block text-slate-200 hover:text-amber-300">Home</a>
+      <a href="#about" class="block text-slate-200 hover:text-amber-300">About & Skills</a>
+      <a href="#workflow" class="block text-slate-200 hover:text-amber-300">PM Workflow</a>
+      <a href="#projects" class="block text-slate-200 hover:text-amber-300">Projects (12)</a>
+      <a href="#playground" class="block text-slate-200 hover:text-amber-300">Playground</a>
+      <a href="#contact" class="block text-amber-300">Contact Me ✦</a>
+    </div>
+  </header>
+
+  <!-- Immediate Real-Time Navbar CMS Sync -->
+  <script>
+    (function syncPortfolioNav() {
+      function applyNav() {
+        try {
+          var raw = localStorage.getItem('portfolio_cms_content');
+          if (!raw) return;
+          var data = JSON.parse(raw);
+          if (!data || !data.navigation || !Array.isArray(data.navigation) || data.navigation.length === 0) return;
+
+          var visibleItems = data.navigation.filter(function(i) { return i.visible !== false; });
+          var desktopNav = document.getElementById('desktop-nav');
+          if (desktopNav && visibleItems.length > 0) {
+            desktopNav.innerHTML = visibleItems.map(function(item) {
+              return '<a href="' + item.url + '" target="' + (item.target || '_self') + '" class="hover:text-amber-300 transition-colors py-1">' + item.label + '</a>';
+            }).join('');
+          }
+
+          var mobileDrawer = document.getElementById('mobile-menu-drawer');
+          if (mobileDrawer && visibleItems.length > 0) {
+            mobileDrawer.innerHTML = visibleItems.map(function(item) {
+              var isContact = item.url === '#contact' || (item.label && item.label.toLowerCase().indexOf('contact') !== -1);
+              return '<a href="' + item.url + '" target="' + (item.target || '_self') + '" class="block ' + (isContact ? 'text-amber-300' : 'text-slate-200 hover:text-amber-300') + '">' + item.label + '</a>';
+            }).join('');
+          }
+        } catch(e) {
+          console.error('Navbar sync error:', e);
+        }
+      }
+
+      // Sync immediately on DOM load
+      applyNav();
+
+      // Sync in real-time across tabs whenever CMS updates
+      window.addEventListener('storage', function(e) {
+        if (e.key === 'portfolio_cms_content' || e.key === 'portfolio_cache_version') {
+          applyNav();
+        }
+      });
+    })();
+  </script>
+
+  <!-- Main Content Area -->
+  <main class="flex-1 pt-28">
+
+    <!-- 2. Hero Section -->
+    <section id="home" class="relative py-16 md:py-24 overflow-hidden">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+        <div class="max-w-4xl mx-auto text-center space-y-6">
+
+          <!-- Handwritten Introduction Badge -->
+          <div id="hero-handwritten-intro" class="font-handwritten text-2xl sm:text-3xl text-amber-300 font-bold transform -rotate-2 fade-up-element">
+            ✦ my name is Alex Rivera ✏️
+          </div>
+
+          <!-- Main Headline -->
+          <h1 class="text-4xl sm:text-6xl font-extrabold tracking-tight font-heading leading-[1.15] fade-up-element delay-100">
+            Translating Business Goals into <br class="hidden sm:inline">
+            <span class="marker-highlight text-amber-300">High-Performing Web Solutions.</span>
+          </h1>
+
+          <!-- Sub-headline -->
+          <p class="text-base sm:text-xl text-slate-300 dark:text-slate-400 max-w-3xl mx-auto leading-relaxed font-normal fade-up-element delay-200">
+            Experienced IT Project Manager & Website Specialist bridging technical execution and strategic business needs. I lead cross-functional teams to deliver complex web platforms on time and within scope.
+          </p>
+
+          <!-- Hero Floating Sticky Badges -->
+          <div class="flex flex-wrap items-center justify-center gap-3 pt-2 fade-up-element delay-300">
+            <div class="sticky-note sticky-yellow px-4 py-2 rounded-xl text-xs font-bold font-heading transform -rotate-2">
+              🎯 Scrum Certified IT Lead
+            </div>
+            <div class="sticky-note sticky-mint px-4 py-2 rounded-xl text-xs font-bold font-heading transform rotate-2">
+              ⚡ 12+ Enterprise Releases
+            </div>
+            <div class="sticky-note sticky-lavender px-4 py-2 rounded-xl text-xs font-bold font-heading transform -rotate-1">
+              📈 99.4% Sprint Velocity
+            </div>
+            <div class="sticky-note sticky-peach px-4 py-2 rounded-xl text-xs font-bold font-heading transform rotate-3">
+              🌐 10M+ End User Reach
+            </div>
+          </div>
+
+          <!-- Hero Action Buttons -->
+          <div class="flex flex-col sm:flex-row items-center justify-center gap-4 pt-6 fade-up-element delay-400">
+            <a href="#projects" class="w-full sm:w-auto px-8 py-4 rounded-2xl text-sm font-extrabold text-slate-950 bg-amber-400 hover:bg-amber-300 border-2 border-slate-950 shadow-offset-lg transform hover:-translate-y-1 transition-all flex items-center justify-center gap-2 font-heading">
+              <span>View My Work ✦</span>
+            </a>
+
+            <a href="#contact" class="hover-amber-btn w-full sm:w-auto px-8 py-4 rounded-2xl text-sm font-extrabold text-slate-100 bg-slate-800 border-2 border-slate-700 shadow-offset transform transition-all flex items-center justify-center gap-2 font-heading">
+              <span>Let's Connect</span>
+            </a>
+
+            <button id="copy-email-btn" class="hover-amber-btn w-full sm:w-auto px-6 py-4 rounded-2xl text-sm font-bold text-slate-300 bg-slate-900 border-2 border-slate-700 shadow-offset transform transition-all flex items-center justify-center gap-2 font-heading">
+              <svg class="w-4 h-4 icon-amber" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"></path></svg>
+              <span>Copy Email</span>
+            </button>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- 3. About Me & Core Competencies Section -->
+    <section id="about" class="py-20 border-y-2 border-slate-800 relative">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-start">
+          
+          <!-- Bio Column -->
+          <div class="lg:col-span-5 space-y-6 fade-up-element">
+            <div>
+              <span class="font-handwritten text-2xl text-amber-300 font-bold block mb-1">about me! ✨</span>
+              <h2 class="text-3xl sm:text-4xl font-extrabold font-heading text-white tracking-tight">
+                Managing the Process. Mastering the Platform.
+              </h2>
+            </div>
+
+            <p class="text-base text-slate-300 leading-relaxed">
+              A successful digital product requires more than good code—it requires clear communication, risk mitigation, and strategic oversight. With a dual focus on IT Project Management and Web Architecture, I lead cross-functional teams to build intuitive, scalable, and secure digital platforms.
+            </p>
+
+            <p class="text-sm text-slate-400 leading-relaxed">
+              Whether it's a high-traffic enterprise landing page, a big data portal, or a complex hyperlocal dealer system, I ensure every sprint delivers measurable business value.
+            </p>
+
+            <!-- Focus Badges -->
+            <div class="space-y-3 pt-2">
+              <div class="flex items-center gap-3 p-3 rounded-xl bg-slate-800/80 border-2 border-slate-700 shadow-sm">
+                <span class="text-xl">🎯</span>
+                <span class="text-sm font-bold text-slate-200">Cross-Functional Team & Vendor Governance</span>
+              </div>
+              <div class="flex items-center gap-3 p-3 rounded-xl bg-slate-800/80 border-2 border-slate-700 shadow-sm">
+                <span class="text-xl">⚡</span>
+                <span class="text-sm font-bold text-slate-200">End-to-End Web Architecture & Delivery</span>
+              </div>
+              <div class="flex items-center gap-3 p-3 rounded-xl bg-slate-800/80 border-2 border-slate-700 shadow-sm">
+                <span class="text-xl">📊</span>
+                <span class="text-sm font-bold text-slate-200">Agile Sprint Velocity & Risk Mitigation</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Sticky Notes Skill Matrix -->
+          <div class="lg:col-span-7 space-y-6 fade-up-element delay-200">
+            <div class="canvas-card p-8 rounded-3xl space-y-6">
+              
+              <div>
+                <span class="font-handwritten text-xl text-amber-300 font-bold block mb-1">my skill stack 🎨</span>
+                <h3 class="text-xl font-extrabold font-heading text-white">Core Competencies & Tools</h3>
+              </div>
+
+              <div class="grid grid-cols-2 sm:grid-cols-3 gap-4">
+                
+                <div class="sticky-note sticky-yellow p-4 rounded-2xl transform -rotate-2">
+                  <div class="text-xs font-bold uppercase tracking-wider opacity-70 mb-1">Agile Lead</div>
+                  <div class="text-sm font-extrabold font-heading">Agile & Scrum</div>
+                </div>
+
+                <div class="sticky-note sticky-mint p-4 rounded-2xl transform rotate-2">
+                  <div class="text-xs font-bold uppercase tracking-wider opacity-70 mb-1">Governance</div>
+                  <div class="text-sm font-extrabold font-heading">Sprint Velocity</div>
+                </div>
+
+                <div class="sticky-note sticky-lavender p-4 rounded-2xl transform -rotate-1">
+                  <div class="text-xs font-bold uppercase tracking-wider opacity-70 mb-1">Integrations</div>
+                  <div class="text-sm font-extrabold font-heading">API Architecture</div>
+                </div>
+
+                <div class="sticky-note sticky-peach p-4 rounded-2xl transform rotate-1">
+                  <div class="text-xs font-bold uppercase tracking-wider opacity-70 mb-1">CMS Platforms</div>
+                  <div class="text-sm font-extrabold font-heading">CMS Config</div>
+                </div>
+
+                <div class="sticky-note sticky-cyan p-4 rounded-2xl transform -rotate-2">
+                  <div class="text-xs font-bold uppercase tracking-wider opacity-70 mb-1">Quality Assurance</div>
+                  <div class="text-sm font-extrabold font-heading">QA & UAT Testing</div>
+                </div>
+
+                <div class="sticky-note sticky-pink p-4 rounded-2xl transform rotate-2">
+                  <div class="text-xs font-bold uppercase tracking-wider opacity-70 mb-1">Risk Control</div>
+                  <div class="text-sm font-extrabold font-heading">Risk Mitigation</div>
+                </div>
+
+                <div class="sticky-note sticky-mint p-4 rounded-2xl transform rotate-1">
+                  <div class="text-xs font-bold uppercase tracking-wider opacity-70 mb-1">Tooling</div>
+                  <div class="text-sm font-extrabold font-heading">Jira & Confluence</div>
+                </div>
+
+                <div class="sticky-note sticky-yellow p-4 rounded-2xl transform -rotate-1">
+                  <div class="text-xs font-bold uppercase tracking-wider opacity-70 mb-1">Management</div>
+                  <div class="text-sm font-extrabold font-heading">Resource Alloc.</div>
+                </div>
+
+                <div class="sticky-note sticky-lavender p-4 rounded-2xl transform rotate-3">
+                  <div class="text-xs font-bold uppercase tracking-wider opacity-70 mb-1">Compliance</div>
+                  <div class="text-sm font-extrabold font-heading">Security Audit</div>
+                </div>
+
+              </div>
+
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+    </section>
+
+    <!-- 4. PM Workflow Section -->
+    <section id="workflow" class="py-20 relative">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        
+        <div class="text-center max-w-3xl mx-auto space-y-3 mb-16 fade-up-element">
+          <span class="font-handwritten text-2xl text-amber-300 font-bold block">how I deliver ✦</span>
+          <h2 class="text-3xl sm:text-4xl font-extrabold font-heading text-white tracking-tight">
+            5-Stage IT Delivery Blueprint
+          </h2>
+          <p class="text-sm text-slate-400">
+            A structured blueprint ensuring predictable sprint cadence, minimal scope creep, and zero-downtime releases.
+          </p>
+        </div>
+
+        <!-- Workflow Nodes -->
+        <div class="grid grid-cols-1 md:grid-cols-5 gap-4">
+          
+          <div class="canvas-card p-6 rounded-2xl space-y-3 fade-up-element delay-100 relative">
+            <div class="w-8 h-8 rounded-lg bg-amber-400 text-slate-950 font-extrabold flex items-center justify-center text-sm font-heading border-2 border-slate-950">01</div>
+            <h4 class="text-base font-extrabold text-white font-heading">Discovery & Scope</h4>
+            <p class="text-xs text-slate-400 leading-relaxed">Stakeholder alignment, backlog story grooming, and success metric definition.</p>
+          </div>
+
+          <div class="canvas-card p-6 rounded-2xl space-y-3 fade-up-element delay-200 relative">
+            <div class="w-8 h-8 rounded-lg bg-sky-300 text-slate-950 font-extrabold flex items-center justify-center text-sm font-heading border-2 border-slate-950">02</div>
+            <h4 class="text-base font-extrabold text-white font-heading">Architecture</h4>
+            <p class="text-xs text-slate-400 leading-relaxed">Selecting web frameworks, database schemas, and API integration contracts.</p>
+          </div>
+
+          <div class="canvas-card p-6 rounded-2xl space-y-3 fade-up-element delay-300 relative">
+            <div class="w-8 h-8 rounded-lg bg-emerald-300 text-slate-950 font-extrabold flex items-center justify-center text-sm font-heading border-2 border-slate-950">03</div>
+            <h4 class="text-base font-extrabold text-white font-heading">Agile Sprints</h4>
+            <p class="text-xs text-slate-400 leading-relaxed">2-week iterative sprints, daily standups, and continuous code integration.</p>
+          </div>
+
+          <div class="canvas-card p-6 rounded-2xl space-y-3 fade-up-element delay-400 relative">
+            <div class="w-8 h-8 rounded-lg bg-purple-300 text-slate-950 font-extrabold flex items-center justify-center text-sm font-heading border-2 border-slate-950">04</div>
+            <h4 class="text-base font-extrabold text-white font-heading">QA & UAT</h4>
+            <p class="text-xs text-slate-400 leading-relaxed">Security audit hardening, automated regression, and User Acceptance sign-off.</p>
+          </div>
+
+          <div class="canvas-card p-6 rounded-2xl space-y-3 fade-up-element delay-500 relative">
+            <div class="w-8 h-8 rounded-lg bg-pink-300 text-slate-950 font-extrabold flex items-center justify-center text-sm font-heading border-2 border-slate-950">05</div>
+            <h4 class="text-base font-extrabold text-white font-heading">Launch & Value</h4>
+            <p class="text-xs text-slate-400 leading-relaxed">Production release, analytics tracking, and continuous post-launch optimization.</p>
+          </div>
+
+        </div>
+
+      </div>
+    </section>
+
+    <!-- 5. Core Projects Section (All 12 Projects) -->
+    <section id="projects" class="py-20 border-t-2 border-slate-800 relative">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        
+        <div class="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-12 fade-up-element">
+          <div>
+            <span class="font-handwritten text-3xl text-amber-300 font-bold block mb-1">explore my work! 🎨</span>
+            <h2 class="text-3xl sm:text-4xl font-extrabold font-heading text-white tracking-tight">
+              Featured Technical Projects
+            </h2>
+            <p class="text-sm text-slate-400 mt-1">
+              Explore 12 flagship digital platforms and web systems executed under my project leadership.
+            </p>
+          </div>
+
+          <!-- Figma Canvas Filter Tabs -->
+          <div class="flex flex-wrap gap-2 bg-slate-900 p-2 rounded-2xl border-2 border-slate-700 shadow-offset">
+            <button class="filter-tab active px-3.5 py-1.5 text-xs font-bold rounded-xl transition-all" data-filter="all">
+              All (12)
+            </button>
+            <button class="filter-tab px-3.5 py-1.5 text-xs font-bold rounded-xl text-slate-300 hover:text-white transition-all" data-filter="enterprise">
+              Enterprise & Gov
+            </button>
+            <button class="filter-tab px-3.5 py-1.5 text-xs font-bold rounded-xl text-slate-300 hover:text-white transition-all" data-filter="ecommerce">
+              E-Commerce
+            </button>
+            <button class="filter-tab px-3.5 py-1.5 text-xs font-bold rounded-xl text-slate-300 hover:text-white transition-all" data-filter="apps">
+              Apps & Systems
+            </button>
+            <button class="filter-tab px-3.5 py-1.5 text-xs font-bold rounded-xl text-slate-300 hover:text-white transition-all" data-filter="microsites">
+              Microsites
+            </button>
+          </div>
+        </div>
+
+        <!-- Canvas Grid Container -->
+        <div id="projects-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+          <!-- Dynamically populated by main.js -->
+        </div>
+
+      </div>
+    </section>
+
+    <!-- 6. Interactive Playground Section -->
+    <section id="playground" class="py-20 border-t-2 border-slate-800 relative">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        
+        <div class="text-center max-w-3xl mx-auto space-y-3 mb-12 fade-up-element">
+          <span class="font-handwritten text-3xl text-sky-300 font-bold block">interactive playground & PM tools 🧪</span>
+          <h2 class="text-3xl sm:text-4xl font-extrabold font-heading text-white tracking-tight">
+            Sprint Cadence & Risk Estimator
+          </h2>
+          <p class="text-sm text-slate-400">
+            Simulate sprint delivery timelines and risk grades based on team size and scope complexity.
+          </p>
+        </div>
+
+        <div class="max-w-2xl mx-auto canvas-card p-8 rounded-3xl space-y-6 fade-up-element delay-100">
+          
+          <div class="space-y-4">
+            <div>
+              <label for="team-size-input" class="block text-xs font-bold uppercase tracking-wider text-slate-300 mb-2">Team Size (Engineers & Designers)</label>
+              <input type="range" id="team-size-input" min="2" max="20" value="8" class="w-full accent-amber-400 cursor-pointer">
+              <div class="text-right text-xs text-amber-300 font-bold mt-1">Value: <span id="team-val">8 Members</span></div>
+            </div>
+
+            <div>
+              <label for="scope-complexity-input" class="block text-xs font-bold uppercase tracking-wider text-slate-300 mb-2">Scope Complexity Level</label>
+              <select id="scope-complexity-input" class="w-full px-4 py-3 rounded-xl bg-slate-900 border-2 border-slate-700 text-white font-bold text-sm focus:outline-none focus:border-amber-400">
+                <option value="1">Low — Standard Landing Page & CMS</option>
+                <option value="2">Medium — E-Commerce Storefront & Payment APIs</option>
+                <option value="3" selected>High — Enterprise Big Data Portal & GIS</option>
+                <option value="5">Critical — State Government Audit System & Hardware OCR</option>
+              </select>
+            </div>
+          </div>
+
+          <!-- Estimation Display -->
+          <div class="p-6 rounded-2xl bg-slate-900 border-2 border-slate-700 text-center space-y-2 shadow-offset" id="calc-result-display">
+            <div class="text-3xl font-extrabold text-white font-heading">6 Weeks (3 Sprints)</div>
+            <div class="text-xs font-bold text-amber-300">Risk Grade: Medium (Standard Governance)</div>
+          </div>
+
+        </div>
+
+      </div>
+    </section>
+
+    <!-- 7. Contact Section -->
+    <section id="contact" class="py-24 border-t-2 border-slate-800 relative">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+          
+          <div class="lg:col-span-6 space-y-6 fade-up-element">
+            <span class="font-handwritten text-3xl text-amber-300 font-bold block">let's make something together ✦</span>
+
+            <h2 class="text-4xl sm:text-6xl font-extrabold font-heading text-white tracking-tight leading-tight">
+              Ready to build your next digital product?
+            </h2>
+
+            <p class="text-base text-slate-300 leading-relaxed">
+              Got a project, a hard technical problem, or need strategic IT project management oversight? Drop a line. I read every single message.
+            </p>
+
+            <div class="pt-4">
+              <a href="mailto:alex.rivera.itpm@example.com" class="inline-flex items-center gap-3 px-8 py-4 rounded-2xl text-base font-extrabold text-slate-950 bg-amber-400 hover:bg-amber-300 border-2 border-slate-950 shadow-offset-lg transform hover:-translate-y-1 transition-all font-heading">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path></svg>
+                <span>Send Me an Email ✦</span>
+              </a>
+            </div>
+          </div>
+
+          <!-- Contact Form Card -->
+          <div class="lg:col-span-6 fade-up-element delay-200">
+            <div class="canvas-card p-8 rounded-3xl space-y-6">
+              <h3 class="text-xl font-extrabold font-heading text-white">Direct Message</h3>
+              
+              <form id="contact-form" class="space-y-4">
+                <div>
+                  <label for="name" class="block text-xs font-bold text-slate-300 uppercase tracking-wider mb-1.5">Your Name</label>
+                  <input type="text" id="name" required placeholder="e.g. Sarah Jenkins" class="w-full px-4 py-3 rounded-xl bg-slate-900 border-2 border-slate-700 text-white placeholder-slate-500 text-sm focus:outline-none focus:border-amber-400">
+                </div>
+
+                <div>
+                  <label for="email" class="block text-xs font-bold text-slate-300 uppercase tracking-wider mb-1.5">Email Address</label>
+                  <input type="email" id="email" required placeholder="sarah@company.com" class="w-full px-4 py-3 rounded-xl bg-slate-900 border-2 border-slate-700 text-white placeholder-slate-500 text-sm focus:outline-none focus:border-amber-400">
+                </div>
+
+                <div>
+                  <label for="message" class="block text-xs font-bold text-slate-300 uppercase tracking-wider mb-1.5">Project Overview / Goals</label>
+                  <textarea id="message" rows="4" required placeholder="Describe your technical initiative or scope requirements..." class="w-full px-4 py-3 rounded-xl bg-slate-900 border-2 border-slate-700 text-white placeholder-slate-500 text-sm focus:outline-none focus:border-amber-400"></textarea>
+                </div>
+
+                <button type="submit" class="w-full py-4 rounded-xl font-extrabold text-sm text-slate-950 bg-amber-400 hover:bg-amber-300 border-2 border-slate-950 shadow-offset font-heading transition-all">
+                  Submit Project Inquiry ✦
+                </button>
+              </form>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- Footer -->
+        <div class="mt-20 pt-8 border-t-2 border-slate-800 flex flex-col sm:flex-row items-center justify-between text-xs text-slate-400 gap-4">
+          <div id="footer-copyright">
+            © 2026 Alex Rivera · IT Project Manager & Website Specialist. Made with ✦
+          </div>
+          
+          <div class="flex items-center gap-6 font-bold">
+            <a href="#home" class="hover:text-amber-300 transition-colors">Back to Top ↑</a>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Detail Modal -->
+  <div id="project-modal" class="modal-backdrop fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6 bg-slate-950/80 backdrop-blur-md">
+    <div class="modal-content w-full max-w-3xl max-h-[90vh] bg-slate-900 border-2 border-slate-700 rounded-3xl shadow-offset-lg overflow-y-auto" id="modal-body-content">
+      <!-- Injected dynamically by main.js -->
+    </div>
+  </div>
+
+  <script>
+    (function() {
+      var ver = localStorage.getItem('portfolio_cache_version') || '6';
+      var s = document.createElement('script');
+      s.src = './assets/js/main.js?v=' + ver;
+      document.body.appendChild(s);
+    })();
+  </script>
+  <script>
+    const slider = document.getElementById('team-size-input');
+    const val = document.getElementById('team-val');
+    if (slider && val) {
+      slider.addEventListener('input', (e) => {
+        val.textContent = e.target.value + ' Members';
+      });
+    }
+  </script>
+</body>
+</html>
