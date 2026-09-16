@@ -1,0 +1,720 @@
+{
+  "adminUsers": [
+    {
+      "id": "usr-admin",
+      "username": "admin",
+      "password": "password",
+      "role": "Super Admin"
+    }
+  ],
+  "navigation": [
+    {
+      "id": "nav-home",
+      "label": "Home",
+      "url": "#home",
+      "target": "_self",
+      "visible": true
+    },
+    {
+      "id": "nav-about",
+      "label": "About",
+      "url": "#about",
+      "target": "_self",
+      "visible": true
+    },
+    {
+      "id": "nav-workflow",
+      "label": "Workflow",
+      "url": "#workflow",
+      "target": "_self",
+      "visible": true
+    },
+    {
+      "id": "nav-projects",
+      "label": "Projects",
+      "url": "#projects",
+      "target": "_self",
+      "visible": true
+    },
+    {
+      "id": "nav-playground",
+      "label": "Playground",
+      "url": "#playground",
+      "target": "_self",
+      "visible": true
+    },
+    {
+      "id": "nav-contact",
+      "label": "Contact",
+      "url": "#contact",
+      "target": "_self",
+      "visible": true
+    }
+  ],
+  "footer": {
+    "copyright": "© 2026 Andrian Guruh· IT Project Manager & Website Specialist."
+  },
+  "profile": {
+    "name": "Andri",
+    "titleTag": "IT Project Manager - Web Specialist",
+    "cmsBadge": "-",
+    "cmsTitle": "Admin Portal",
+    "cmsSubtitle": "Real-Time Content Synchronizer · Andri Portfolio"
+  },
+  "hero": {
+    "statusBadge": "Available for Strategic IT Initiatives & Web Advisory",
+    "headline": "Translating Business Goals into High-Performing Web Solutions.",
+    "markerHighlight": "High-Performing Web Solutions.",
+    "subheadline": "Experienced IT Project Manager & Website Specialist bridging technical execution and strategic business needs. I lead cross-functional teams to deliver complex web platforms on time and within scope.",
+    "stats": [
+      {
+        "number": "12+",
+        "label": "Enterprise Projects Delivered"
+      },
+      {
+        "number": "99.4%",
+        "label": "On-Time Sprint Velocity"
+      },
+      {
+        "number": "10M+",
+        "label": "End Users Reached"
+      },
+      {
+        "number": "Scrum",
+        "label": "Certified Agile IT Lead"
+      }
+    ]
+  },
+  "about": {
+    "title": "Managing the Process. Mastering the Platform.",
+    "paragraph1": "A successful digital product requires more than good code—it requires clear communication, risk mitigation, and strategic oversight. With a dual focus on IT Project Management and Web Architecture, I lead cross-functional teams to build intuitive, scalable, and secure digital platforms.",
+    "paragraph2": "Whether it's a high-traffic enterprise landing page, a big data portal, or a complex hyperlocal dealer system, I ensure every sprint delivers measurable business value.",
+    "skills": [
+      {
+        "name": "Agile & Scrum",
+        "category": "Agile Lead",
+        "color": "sticky-yellow"
+      },
+      {
+        "name": "Sprint Velocity",
+        "category": "Governance",
+        "color": "sticky-mint"
+      },
+      {
+        "name": "API Architecture",
+        "category": "Integrations",
+        "color": "sticky-lavender"
+      },
+      {
+        "name": "CMS Config",
+        "category": "CMS Platforms",
+        "color": "sticky-peach"
+      },
+      {
+        "name": "QA & UAT Testing",
+        "category": "Quality Assurance",
+        "color": "sticky-cyan"
+      },
+      {
+        "name": "Risk Mitigation",
+        "category": "Risk Control",
+        "color": "sticky-pink"
+      },
+      {
+        "name": "Jira & Confluence",
+        "category": "Tooling",
+        "color": "sticky-mint"
+      },
+      {
+        "name": "Resource Alloc.",
+        "category": "Management",
+        "color": "sticky-yellow"
+      },
+      {
+        "name": "Security Audit",
+        "category": "Compliance",
+        "color": "sticky-lavender"
+      }
+    ]
+  },
+  "workflow": [
+    {
+      "num": "01",
+      "title": "Discovery & Scope",
+      "desc": "Stakeholder alignment, backlog story grooming, and success metric definition."
+    },
+    {
+      "num": "02",
+      "title": "Architecture",
+      "desc": "Selecting web frameworks, database schemas, and API integration contracts."
+    },
+    {
+      "num": "03",
+      "title": "Agile Sprints",
+      "desc": "2-week iterative sprints, daily standups, and continuous code integration."
+    },
+    {
+      "num": "04",
+      "title": "QA & UAT",
+      "desc": "Security audit hardening, automated regression, and User Acceptance sign-off."
+    },
+    {
+      "num": "05",
+      "title": "Launch & Value",
+      "desc": "Production release, analytics tracking, and continuous post-launch optimization."
+    }
+  ],
+  "contact": {
+    "headline": "Ready to build your next digital product?",
+    "subheadline": "Got a project, a hard technical problem, or need strategic IT project management oversight? Drop a line. I read every single message.",
+    "email": "alex.rivera.itpm@example.com",
+    "responseTime": "Response Time: < 24 Hours"
+  },
+  "projects": [
+    {
+      "id": "wondr-bni",
+      "title": "Landing Page Wondr by BNI",
+      "category": "enterprise",
+      "categoryLabel": "Enterprise & Banking",
+      "badgeColor": "bg-yellow-300 text-slate-950 font-bold",
+      "subtitle": "High-Conversion Banking & Wealth Management Digital Platform",
+      "icon": "landmark",
+      "gradient": "from-amber-400/20 via-slate-800 to-slate-900",
+      "impact": "140% Increase in App Download Conversions",
+      "role": "Lead IT Project Manager & Web Strategist",
+      "sprintDuration": "12 Sprints (6 Months)",
+      "description": "Directed the end-to-end web strategy, UX architecture, and technical execution for Bank BNI’s flagship Wondr banking landing platform. Managed cross-functional teams of 14+ software engineers, UI/UX designers, security auditors, and banking compliance officers.",
+      "deliverables": [
+        "High-performance responsive landing pages optimized for CWV (Largest Contentful Paint < 1.2s)",
+        "Bank-grade security audit compliance & OWASP Top 10 hardening",
+        "Integration with core banking analytics and real-time app store conversion tracking",
+        "CMS workflow setup enabling non-technical marketing teams to publish dynamic campaigns"
+      ],
+      "techStack": [
+        "Agile / Scrum",
+        "Next.js / SSR",
+        "Tailwind CSS",
+        "Framer Motion",
+        "API Security",
+        "Jira / Confluence"
+      ],
+      "metrics": [
+        {
+          "label": "Conversion Rate",
+          "value": "+140%"
+        },
+        {
+          "label": "Page Load Speed",
+          "value": "0.9s"
+        },
+        {
+          "label": "Uptime SLA",
+          "value": "99.99%"
+        },
+        {
+          "label": "Active Visitors",
+          "value": "2.5M+/mo"
+        }
+      ]
+    },
+    {
+      "id": "portal-bigdata",
+      "title": "Portal Big Data & Sistem Informasi Konservasi",
+      "category": "enterprise",
+      "categoryLabel": "Government & Big Data",
+      "badgeColor": "bg-emerald-300 text-slate-950 font-bold",
+      "subtitle": "National Conservation Data Warehouse & GIS Spatial Analytics Portal",
+      "icon": "database",
+      "gradient": "from-emerald-400/20 via-slate-800 to-slate-900",
+      "impact": "Integrated 50+ Regional Conservation Databases",
+      "role": "Senior Technical PM & Systems Architect",
+      "sprintDuration": "16 Sprints (8 Months)",
+      "description": "Led the development of a unified Big Data portal and Conservation Information System for nationwide environmental monitoring. Orchestrated real-time data ingestion pipelines, GIS map overlays, and executive dashboard analytics for government leadership.",
+      "deliverables": [
+        "Centralized Big Data portal architecture connecting multi-region sensor networks & databases",
+        "Interactive GIS spatial mapping engine for real-time forest cover & species tracking",
+        "Role-Based Access Control (RBAC) security for multi-agency government users",
+        "Automated reporting tool reducing quarterly compliance report preparation from 3 weeks to 1 hour"
+      ],
+      "techStack": [
+        "Big Data Architecture",
+        "PostGIS / GeoServer",
+        "REST APIs",
+        "Vue.js",
+        "Python / ETL",
+        "Scrum Governance"
+      ],
+      "metrics": [
+        {
+          "label": "Data Sources Connected",
+          "value": "50+"
+        },
+        {
+          "label": "Query Performance",
+          "value": "< 250ms"
+        },
+        {
+          "label": "User Agencies",
+          "value": "18 Min."
+        },
+        {
+          "label": "Spatial Layers",
+          "value": "120+"
+        }
+      ]
+    },
+    {
+      "id": "automotive-showroom",
+      "title": "Automotive Brand Website & Digital Showroom",
+      "category": "ecommerce",
+      "categoryLabel": "Automotive & E-Commerce",
+      "badgeColor": "bg-sky-300 text-slate-950 font-bold",
+      "subtitle": "3D Interactive Vehicle Configurator & Nationwide Dealer Booking Engine",
+      "icon": "car",
+      "gradient": "from-sky-400/20 via-slate-800 to-slate-900",
+      "impact": "+215% Digital Test-Drive Booking Volume",
+      "role": "IT Project Manager & E-Commerce Consultant",
+      "sprintDuration": "10 Sprints (5 Months)",
+      "description": "Spearheaded the digital transformation for a premier automotive brand, building an immersive web showroom with 360-degree vehicle customization, instant loan calculators, and automated test-drive scheduling integrated into dealer CRMs.",
+      "deliverables": [
+        "Interactive 360° WebGL vehicle visualizer & custom accessory builder",
+        "Real-time inventory lookup connected to 85+ nationwide dealership databases",
+        "Financing calculator API integration with leading automotive lender APIs",
+        "Automated lead routing system redirecting customer inquiries within 30 seconds"
+      ],
+      "techStack": [
+        "WebGL / Three.js",
+        "React",
+        "Node.js API",
+        "Salesforce CRM API",
+        "Tailwind CSS",
+        "Agile Sprints"
+      ],
+      "metrics": [
+        {
+          "label": "Test-Drive Leads",
+          "value": "+215%"
+        },
+        {
+          "label": "Showroom Dwell Time",
+          "value": "4m 12s"
+        },
+        {
+          "label": "Dealer Network",
+          "value": "85 Outlets"
+        },
+        {
+          "label": "Mobile Traffic",
+          "value": "78%"
+        }
+      ]
+    },
+    {
+      "id": "ovp-kemendesa",
+      "title": "OVP Kemendesa (One Village One Product)",
+      "category": "enterprise",
+      "categoryLabel": "Public Sector Platform",
+      "badgeColor": "bg-purple-300 text-slate-950 font-bold",
+      "subtitle": "National Rural Economy Ecosystem & Product Catalog Portal",
+      "icon": "building-2",
+      "gradient": "from-purple-400/20 via-slate-800 to-slate-900",
+      "impact": "Digitized Products Across 70,000+ Villages",
+      "role": "Project Manager & Stakeholder Manager",
+      "sprintDuration": "14 Sprints (7 Months)",
+      "description": "Managed the delivery of the OVP Kemendesa platform designed to empower village enterprises (BUMDes) to catalog, market, and distribute local products nationally. Coordinated government ministry guidelines with technical vendor execution.",
+      "deliverables": [
+        "Multi-tenant rural economy platform supporting tens of thousands of local enterprise profiles",
+        "Simplified mobile-friendly onboarding wizard for non-tech village admins",
+        "National supply chain directory & logistics integration endpoints",
+        "Public transparency dashboard tracking village product revenue growth"
+      ],
+      "techStack": [
+        "Laravel / PHP",
+        "MySQL Cluster",
+        "Elasticsearch",
+        "Tailwind CSS",
+        "Agile Delivery"
+      ],
+      "metrics": [
+        {
+          "label": "Villages Onboarded",
+          "value": "70,000+"
+        },
+        {
+          "label": "Cataloged Products",
+          "value": "180,000+"
+        },
+        {
+          "label": "Platform Uptime",
+          "value": "99.9%"
+        },
+        {
+          "label": "Mobile Readiness",
+          "value": "100%"
+        }
+      ]
+    },
+    {
+      "id": "simuh-systems",
+      "title": "SIMUH Hibah & SIMUH Penghapusan",
+      "category": "apps",
+      "categoryLabel": "Asset & Grant Systems",
+      "badgeColor": "bg-pink-300 text-slate-950 font-bold",
+      "subtitle": "Enterprise Grant Allocation & Asset Lifecycle Disposal Information System",
+      "icon": "file-text",
+      "gradient": "from-pink-400/20 via-slate-800 to-slate-900",
+      "impact": "100% Paperless Grant & Asset Decommissioning Audits",
+      "role": "IT PM & Business Process Analyst",
+      "sprintDuration": "12 Sprints (6 Months)",
+      "description": "Designed and implemented dual enterprise workflow systems for government grant distribution (SIMUH Hibah) and official state asset disposal/decommissioning (SIMUH Penghapusan) adhering to strict audit trails.",
+      "deliverables": [
+        "Multi-stage approval workflow engine with cryptographic digital signature support",
+        "Automated financial grant reconciliation matrix and risk scoring algorithms",
+        "Asset depreciation calculator and automated write-off compliance generator",
+        "Complete audit trail logging for state auditor verification (BPK compliance)"
+      ],
+      "techStack": [
+        "Enterprise Java / Spring",
+        "PostgreSQL",
+        "Digital Signatures (BSRE)",
+        "Vue.js",
+        "Audit Logging"
+      ],
+      "metrics": [
+        {
+          "label": "Grant Volume Processed",
+          "value": "$45M+"
+        },
+        {
+          "label": "Processing Time",
+          "value": "-65%"
+        },
+        {
+          "label": "Audit Accuracy",
+          "value": "100%"
+        },
+        {
+          "label": "Digital Signatures",
+          "value": "15,000+"
+        }
+      ]
+    },
+    {
+      "id": "hyperlocal-dealer",
+      "title": "Hyperlocal Dealer System Website",
+      "category": "ecommerce",
+      "categoryLabel": "Retail & Dealer Tech",
+      "badgeColor": "bg-orange-300 text-slate-950 font-bold",
+      "subtitle": "Multi-Location Geo-Targeted Dealer Portal & Stock Distribution Web Engine",
+      "icon": "store",
+      "gradient": "from-orange-400/20 via-slate-800 to-slate-900",
+      "impact": "Automated 120+ Dealer Web Portals into One Platform",
+      "role": "Project Manager & Product Owner",
+      "sprintDuration": "8 Sprints (4 Months)",
+      "description": "Directed the engineering of a hyperlocal franchise platform that dynamically generates location-specific web experiences, stock availability, and promotional landing pages for over 120 regional retail partners.",
+      "deliverables": [
+        "Dynamic sub-domain routing & automatic geo-IP visitor redirection",
+        "Centralized admin panel allowing master brand to sync product updates to 120+ micro-sites",
+        "Local store inventory lookup & click-and-collect reservation module",
+        "Localized WhatsApp business API integration for instant sales agent messaging"
+      ],
+      "techStack": [
+        "Node.js Multi-Tenant",
+        "React",
+        "MongoDB",
+        "Geo-IP API",
+        "WhatsApp API",
+        "Sprint Planning"
+      ],
+      "metrics": [
+        {
+          "label": "Dealer Outlets",
+          "value": "120+"
+        },
+        {
+          "label": "Local Leads",
+          "value": "+310%"
+        },
+        {
+          "label": "Sync Time",
+          "value": "Instant"
+        },
+        {
+          "label": "Setup Time / Outlet",
+          "value": "5 Mins"
+        }
+      ]
+    },
+    {
+      "id": "ecommerce-company-profiles",
+      "title": "E-Commerce & Custom Company Profiles",
+      "category": "ecommerce",
+      "categoryLabel": "E-Commerce & Corporate",
+      "badgeColor": "bg-lime-300 text-slate-950 font-bold",
+      "subtitle": "High-Impact Brand Identities, Modern Storefronts & Headless E-Commerce",
+      "icon": "shopping-bag",
+      "gradient": "from-lime-400/20 via-slate-800 to-slate-900",
+      "impact": "Delivered 25+ Bespoke Corporate & E-Commerce Web Platforms",
+      "role": "Website Specialist & Project Director",
+      "sprintDuration": "Continuous Sprints",
+      "description": "Supervised the strategy, wireframing, frontend engineering, and payment gateway deployment for a suite of custom corporate websites and high-converting e-commerce web stores across retail, FMCG, and tech sectors.",
+      "deliverables": [
+        "Tailor-made headless e-commerce architectures integrated with payment gateways (Midtrans, Xendit)",
+        "Apple-style minimalist aesthetic designs with high-converting mobile checkouts",
+        "SEO strategy execution achieving 1st-page Google rankings for core client keywords",
+        "Automated inventory synchronization across web storefronts and warehouse POS systems"
+      ],
+      "techStack": [
+        "Shopify Headless",
+        "WooCommerce",
+        "React / Next.js",
+        "Payment APIs",
+        "Tailwind CSS",
+        "SEO Optimization"
+      ],
+      "metrics": [
+        {
+          "label": "Sites Delivered",
+          "value": "25+"
+        },
+        {
+          "label": "Avg Mobile Speed",
+          "value": "95/100"
+        },
+        {
+          "label": "Checkout Abandonment",
+          "value": "-28%"
+        },
+        {
+          "label": "Client Retention",
+          "value": "98%"
+        }
+      ]
+    },
+    {
+      "id": "event-registration-system",
+      "title": "Event Registration Systems & Microsites",
+      "category": "microsites",
+      "categoryLabel": "High-Traffic Event Tech",
+      "badgeColor": "bg-rose-300 text-slate-950 font-bold",
+      "subtitle": "High-Concurrency Registration Portals, QR Check-in & Dynamic Badging",
+      "icon": "ticket",
+      "gradient": "from-rose-400/20 via-slate-800 to-slate-900",
+      "impact": "Zero Downtime During 50,000+ Concurrent Ticket Drops",
+      "role": "IT PM & Infrastructure Lead",
+      "sprintDuration": "6 Sprints (3 Months)",
+      "description": "Engineered high-concurrency event registration landing pages and microsites for major international summits, concerts, and corporate expos. Implemented virtual waiting rooms and instant QR badge generation.",
+      "deliverables": [
+        "Autoscaling cloud infrastructure capable of handling 50k+ simultaneous concurrent visitors",
+        "Instant QR-code ticket delivery via Email & WhatsApp with secure validation hashes",
+        "On-site fast-track check-in web application scanner integration",
+        "Dynamic ticket tiering, promo code validation, and VIP seat reservation matrix"
+      ],
+      "techStack": [
+        "AWS Autoscaling",
+        "Redis Queue",
+        "Node.js",
+        "QR Code Generator API",
+        "Stress Testing"
+      ],
+      "metrics": [
+        {
+          "label": "Concurrent Capacity",
+          "value": "50k Visitors"
+        },
+        {
+          "label": "Check-In Speed",
+          "value": "1.8s / Guest"
+        },
+        {
+          "label": "Platform Uptime",
+          "value": "100%"
+        },
+        {
+          "label": "Tickets Issued",
+          "value": "350,000+"
+        }
+      ]
+    },
+    {
+      "id": "service-car-apps",
+      "title": "Service Car Apps & Fleet Management",
+      "category": "apps",
+      "categoryLabel": "Mobility & Web App",
+      "badgeColor": "bg-indigo-300 text-slate-950 font-bold",
+      "subtitle": "On-Demand Automotive Mobile Maintenance & Dispatch System",
+      "icon": "wrench",
+      "gradient": "from-indigo-400/20 via-slate-800 to-slate-900",
+      "impact": "Reduced Service Mechanics Dispatch Lead Time by 50%",
+      "role": "Technical PM & Product Owner",
+      "sprintDuration": "10 Sprints (5 Months)",
+      "description": "Directed the product development for an on-demand mobile service application enabling car owners to request emergency roadside assistance and schedule home car maintenance with real-time GPS mechanic tracking.",
+      "deliverables": [
+        "Customer mobile web app, mechanic dispatch app, and central admin control tower",
+        "Real-time GPS tracking map overlay showing mechanic ETA and route optimization",
+        "Automated service invoice generation & mobile payment gateway integration",
+        "Customer rating, photo proof-of-work upload, and digital warranty passport"
+      ],
+      "techStack": [
+        "PWA / React Native",
+        "Google Maps API",
+        "Firebase Realtime DB",
+        "Node.js",
+        "Scrum / Kanban"
+      ],
+      "metrics": [
+        {
+          "label": "Dispatch Lead Time",
+          "value": "-50%"
+        },
+        {
+          "label": "Customer CSAT",
+          "value": "4.9 / 5.0"
+        },
+        {
+          "label": "Completed Jobs",
+          "value": "40,000+"
+        },
+        {
+          "label": "Mechanics Active",
+          "value": "250+"
+        }
+      ]
+    },
+    {
+      "id": "document-digitization",
+      "title": "Document Digitization System & OCR Portal",
+      "category": "apps",
+      "categoryLabel": "Enterprise System & OCR",
+      "badgeColor": "bg-teal-300 text-slate-950 font-bold",
+      "subtitle": "AI-Powered OCR Archiving, Automated Categorization & Metadata Search",
+      "icon": "file-search",
+      "gradient": "from-teal-400/20 via-slate-800 to-slate-900",
+      "impact": "Digitized & Indexed 2.5 Million Historical Records",
+      "role": "IT PM & AI Solutions Lead",
+      "sprintDuration": "12 Sprints (6 Months)",
+      "description": "Managed the implementation of an enterprise document digitization platform equipped with Optical Character Recognition (OCR), automated metadata extraction, and sub-second full-text document search.",
+      "deliverables": [
+        "High-throughput batch document ingestion pipeline processing 20,000 documents/day",
+        "Custom Tesseract OCR neural network trained on specialized legal & administrative typography",
+        "Elasticsearch full-text search engine indexing PDF text, handwritten signatures & stamps",
+        "Watermarking, redaction engine, and Granular Permission Matrix for Sensitive Records"
+      ],
+      "techStack": [
+        "OCR / Python Neural Net",
+        "Elasticsearch",
+        "React Enterprise UI",
+        "Spring Boot",
+        "Docker"
+      ],
+      "metrics": [
+        {
+          "label": "Documents Processed",
+          "value": "2.5M+"
+        },
+        {
+          "label": "OCR Accuracy",
+          "value": "98.4%"
+        },
+        {
+          "label": "Search Latency",
+          "value": "< 150ms"
+        },
+        {
+          "label": "Storage Saved",
+          "value": "60%"
+        }
+      ]
+    },
+    {
+      "id": "random-number-generator",
+      "title": "Random Number Generator Utility",
+      "category": "apps",
+      "categoryLabel": "Web Utility & Algorithmic Tool",
+      "badgeColor": "bg-amber-300 text-slate-950 font-bold",
+      "subtitle": "Cryptographically Secure Randomization & Draw Audit System",
+      "icon": "hash",
+      "gradient": "from-amber-400/20 via-slate-800 to-slate-900",
+      "impact": "100% Auditable Random Selection for High-Stakes Giveaways",
+      "role": "Web Specialist & Developer Lead",
+      "sprintDuration": "4 Sprints (2 Months)",
+      "description": "Built a web-based cryptographically secure Random Number Generator (RNG) and live drawing utility used for official lottery draws, corporate raffles, and transparent random distribution algorithms.",
+      "deliverables": [
+        "Web Crypto API implementation delivering un-biased, provably fair pseudorandom distribution",
+        "Live presentation mode with customizable particle animations and full-screen visualizer",
+        "SHA-256 seed hashing & downloadable audit logs verifying draw integrity",
+        "Zero external dependencies lightweight architecture for instant web load (< 50ms)"
+      ],
+      "techStack": [
+        "Web Crypto API",
+        "Vanilla JS ES6+",
+        "HTML5 Canvas",
+        "CSS Animations",
+        "Audit Hash Verification"
+      ],
+      "metrics": [
+        {
+          "label": "Crypto Entropy",
+          "value": "256-Bit"
+        },
+        {
+          "label": "Draw Speed",
+          "value": "60 FPS"
+        },
+        {
+          "label": "Audit Integrity",
+          "value": "100%"
+        },
+        {
+          "label": "Asset Size",
+          "value": "< 45 KB"
+        }
+      ]
+    },
+    {
+      "id": "videotron-microsite",
+      "title": "Microsite Company Profile for Videotron",
+      "category": "microsites",
+      "categoryLabel": "Digital Out-of-Home & Media",
+      "badgeColor": "bg-violet-300 text-slate-950 font-bold",
+      "subtitle": "Interactive Screen Showcase, Media Rate Calculator & Digital Map",
+      "icon": "tv",
+      "gradient": "from-violet-400/20 via-slate-800 to-slate-900",
+      "impact": "+180% Inquiries for Digital Billboard Space",
+      "role": "Web Specialist & Project Manager",
+      "sprintDuration": "6 Sprints (3 Months)",
+      "description": "Designed and deployed a high-impact corporate microsite showcasing prime outdoor digital billboard (videotron) locations, real-time LED specs, foot-traffic analytics, and instant media rate estimation.",
+      "deliverables": [
+        "Interactive GIS location map showing real-time videotron availability & daily traffic impressions",
+        "Dynamic rate calculator letting advertisers build custom campaign packages and download quotes",
+        "High-definition video preview gallery illustrating day/night billboard ad rendering",
+        "Instant sales rep dispatch connection via automated lead notification pipeline"
+      ],
+      "techStack": [
+        "Mapbox GL JS",
+        "Next.js",
+        "Tailwind CSS",
+        "Video Stream Optimization",
+        "Agile Governance"
+      ],
+      "metrics": [
+        {
+          "label": "Billboard Inquiries",
+          "value": "+180%"
+        },
+        {
+          "label": "Map Locations",
+          "value": "45 Points"
+        },
+        {
+          "label": "Instant Quotes",
+          "value": "3,200+"
+        },
+        {
+          "label": "Page Speed",
+          "value": "98/100"
+        }
+      ]
+    }
+  ]
+}

@@ -4,6 +4,9 @@
  */
 
 const DEFAULT_PORTFOLIO_DATA = {
+  adminUsers: [
+    { id: 'usr-admin', username: 'admin', password: 'password', role: 'Super Admin' }
+  ],
   navigation: [
     { id: 'nav-home', label: 'Home', url: '#home', target: '_self', visible: true },
     { id: 'nav-about', label: 'About & Skills', url: '#about', target: '_self', visible: true },
@@ -412,6 +415,9 @@ function loadCmsData() {
         if (parsed.customCategories && Array.isArray(parsed.customCategories)) {
           merged.customCategories = parsed.customCategories;
         }
+        if (parsed.adminUsers && Array.isArray(parsed.adminUsers)) {
+          merged.adminUsers = parsed.adminUsers;
+        }
       }
     } catch (e) { console.error(e); }
   }
@@ -420,9 +426,27 @@ function loadCmsData() {
 
 function saveCmsData(data) {
   currentCmsData = data;
+  // 1. Always save to localStorage for fast local reads
   localStorage.setItem('portfolio_cms_content', JSON.stringify(data));
   applyCmsHeaderBranding();
-  showCmsToast('Changes published to live portfolio! ✦');
+
+  // 2. Also persist to disk via the local server API so ALL browsers see the same data
+  fetch('/api/save-data', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(data)
+  })
+  .then(r => r.json())
+  .then(res => {
+    if (res.ok) {
+      showCmsToast('✅ Published to all browsers! Changes saved to disk. ✦');
+    } else {
+      showCmsToast('⚠ Saved locally only. Restart server.py for cross-browser sync.');
+    }
+  })
+  .catch(() => {
+    showCmsToast('⚠ Saved locally only. Run server.py for cross-browser sync.');
+  });
 }
 
 function applyCmsHeaderBranding() {
@@ -440,7 +464,11 @@ function applyCmsHeaderBranding() {
   if (badgeEl) badgeEl.textContent = badge;
 }
 
+let cmsInitialized = false;
 function initCms() {
+  if (cmsInitialized) return;
+  cmsInitialized = true;
+  
   applyCmsHeaderBranding();
   initCmsTabs();
   renderHeroForm();
@@ -457,9 +485,9 @@ function initCms() {
 }
 
 if (document.readyState === 'loading') {
-  document.addEventListener('DOMContentLoaded', initCms);
+  document.addEventListener('DOMContentLoaded', checkAuthSession);
 } else {
-  initCms();
+  checkAuthSession();
 }
 
 /* Tab Controller */
@@ -484,6 +512,9 @@ function initCmsTabs() {
       if (targetId === 'cms-nav') {
         renderNavPreview();
         renderFooterCopyrightManager();
+      }
+      if (targetId === 'cms-users') {
+        renderUsersList();
       }
     });
   });
@@ -2033,4 +2064,190 @@ function renderLeadsPanel() {
     </div>
   `;
 }
+
+
+/* ── Authentication Manager ────────────────────────────── */
+
+const CMS_SESSION_KEY = 'cms_session_token';
+const CMS_SESSION_EXPIRY_KEY = 'cms_session_expiry';
+const CMS_SESSION_DURATION_MS = 8 * 60 * 60 * 1000; // 8 hours
+
+function checkAuthSession() {
+  const token = sessionStorage.getItem(CMS_SESSION_KEY);
+  const expiry = sessionStorage.getItem(CMS_SESSION_EXPIRY_KEY);
+  const loginOverlay = document.getElementById('cms-login');
+  const cmsApp = document.getElementById('cms-app');
+
+  // Also clear any old localStorage token from previous version
+  localStorage.removeItem('cms_session_token');
+
+  const isValid = token === 'active' && expiry && Date.now() < parseInt(expiry, 10);
+
+  if (isValid) {
+    loginOverlay.classList.add('hidden');
+    cmsApp.classList.remove('hidden');
+    cmsApp.classList.add('flex');
+    initCms();
+  } else {
+    // Clear any expired session
+    sessionStorage.removeItem(CMS_SESSION_KEY);
+    sessionStorage.removeItem(CMS_SESSION_EXPIRY_KEY);
+    loginOverlay.classList.remove('hidden');
+    cmsApp.classList.add('hidden');
+    cmsApp.classList.remove('flex');
+  }
+}
+
+document.getElementById('cms-login-form').onsubmit = (e) => {
+  e.preventDefault();
+  const userIn = document.getElementById('login-username').value.trim();
+  const passIn = document.getElementById('login-password').value.trim();
+  const loginBtn = e.target.querySelector('button[type="submit"]');
+
+  if (!userIn || !passIn) return;
+
+  // Brief loading state
+  if (loginBtn) { loginBtn.disabled = true; loginBtn.textContent = 'Verifying...'; }
+
+  const users = currentCmsData.adminUsers || DEFAULT_PORTFOLIO_DATA.adminUsers;
+  const validUser = users.find(u => u.username === userIn && u.password === passIn);
+
+  setTimeout(() => {
+    if (validUser) {
+      sessionStorage.setItem(CMS_SESSION_KEY, 'active');
+      sessionStorage.setItem(CMS_SESSION_EXPIRY_KEY, String(Date.now() + CMS_SESSION_DURATION_MS));
+      document.getElementById('cms-login-form').reset();
+      checkAuthSession();
+    } else {
+      // Show inline error instead of alert
+      const errEl = document.getElementById('login-error-msg');
+      if (errEl) {
+        errEl.textContent = '⚠ Invalid username or password. Please try again.';
+        errEl.classList.remove('hidden');
+        setTimeout(() => errEl.classList.add('hidden'), 4000);
+      }
+      if (loginBtn) { loginBtn.disabled = false; loginBtn.textContent = 'Secure Login ✦'; }
+    }
+  }, 400);
+};
+
+document.getElementById('logout-btn').onclick = () => {
+  sessionStorage.removeItem(CMS_SESSION_KEY);
+  sessionStorage.removeItem(CMS_SESSION_EXPIRY_KEY);
+  checkAuthSession();
+};
+
+/* ── User Management CRUD ────────────────────────────── */
+
+function renderUsersList() {
+  const container = document.getElementById('users-cms-list');
+  if (!container) return;
+  const users = currentCmsData.adminUsers || [];
+  
+  if (users.length === 0) {
+    container.innerHTML = `<div class="p-6 text-center text-slate-500 text-sm font-bold border-2 border-dashed border-slate-700 rounded-2xl">No admin users found.</div>`;
+    return;
+  }
+  
+  let html = `<div class="grid grid-cols-1 md:grid-cols-2 gap-4">`;
+  users.forEach((u, idx) => {
+    html += `
+      <div class="p-4 rounded-xl bg-slate-800 border border-slate-700 flex flex-col gap-2">
+        <div class="flex items-start justify-between">
+          <div>
+            <div class="font-extrabold text-white text-sm">${escapeHtml(u.username)}</div>
+            <div class="text-[10px] font-bold text-amber-300 uppercase">${escapeHtml(u.role || 'Admin')}</div>
+          </div>
+          <div class="flex items-center gap-1">
+            <button onclick="openUserModalEditor(${idx})" class="p-1.5 rounded-lg bg-slate-700 text-slate-300 hover:text-white hover:bg-slate-600 transition-colors" title="Edit">✏️</button>
+            <button onclick="deleteUser(${idx})" class="p-1.5 rounded-lg bg-slate-700 text-rose-400 hover:text-white hover:bg-rose-900 transition-colors" title="Delete">🗑</button>
+          </div>
+        </div>
+      </div>
+    `;
+  });
+  html += `</div>`;
+  container.innerHTML = html;
+}
+
+window.deleteUser = function(index) {
+  if (currentCmsData.adminUsers.length <= 1) {
+    alert("Cannot delete the last remaining admin user.");
+    return;
+  }
+  if (confirm(`Are you sure you want to delete user "${currentCmsData.adminUsers[index].username}"?`)) {
+    currentCmsData.adminUsers.splice(index, 1);
+    saveCmsData(currentCmsData);
+    renderUsersList();
+  }
+};
+
+window.openUserModalEditor = function(index) {
+  const isNew = index === null;
+  const u = isNew ? {
+    id: 'usr-' + Date.now(),
+    username: '',
+    password: '',
+    role: 'Admin'
+  } : JSON.parse(JSON.stringify(currentCmsData.adminUsers[index]));
+
+  const modalBackdrop = document.getElementById('cms-modal');
+  const modalBody = document.getElementById('cms-modal-body');
+
+  modalBody.innerHTML = `
+    <div class="p-6 bg-slate-900 border-2 border-slate-700 rounded-3xl space-y-4 max-h-[85vh] overflow-y-auto">
+      <div class="flex items-center justify-between pb-3 border-b-2 border-slate-800">
+        <h3 class="text-lg font-bold text-white font-heading">${isNew ? 'Create New Admin User' : 'Edit User: ' + escapeHtml(u.username)}</h3>
+        <button onclick="closeCmsModal()" class="text-slate-400 hover:text-white font-bold">✕</button>
+      </div>
+
+      <form id="user-crud-form" class="space-y-4 text-xs">
+        <div>
+          <label class="block font-bold text-slate-300 uppercase mb-1">Username</label>
+          <input type="text" id="u-username" value="${escapeHtml(u.username)}" required class="w-full px-3 py-2 rounded-lg bg-slate-800 border border-slate-700 text-white font-bold">
+        </div>
+        <div>
+          <label class="block font-bold text-slate-300 uppercase mb-1">Password</label>
+          <input type="text" id="u-password" value="${escapeHtml(u.password)}" required class="w-full px-3 py-2 rounded-lg bg-slate-800 border border-slate-700 text-white font-bold">
+        </div>
+        <div>
+          <label class="block font-bold text-slate-300 uppercase mb-1">Role</label>
+          <select id="u-role" class="w-full px-3 py-2 rounded-lg bg-slate-800 border border-slate-700 text-white font-bold">
+            <option value="Super Admin" ${u.role === 'Super Admin' ? 'selected' : ''}>Super Admin</option>
+            <option value="Admin" ${u.role === 'Admin' ? 'selected' : ''}>Admin</option>
+          </select>
+        </div>
+
+        <button type="submit" class="w-full py-3 rounded-xl font-extrabold text-sm text-slate-950 bg-amber-400 border-2 border-slate-950 font-heading">
+          Save User ✦
+        </button>
+      </form>
+    </div>
+  `;
+
+  modalBackdrop.classList.remove('hidden');
+
+  document.getElementById('user-crud-form').onsubmit = (e) => {
+    e.preventDefault();
+    u.username = document.getElementById('u-username').value.trim();
+    u.password = document.getElementById('u-password').value.trim();
+    u.role = document.getElementById('u-role').value;
+
+    if (isNew) {
+      if (!currentCmsData.adminUsers) currentCmsData.adminUsers = [];
+      const exists = currentCmsData.adminUsers.find(x => x.username === u.username);
+      if (exists) {
+        alert("Username already exists.");
+        return;
+      }
+      currentCmsData.adminUsers.push(u);
+    } else {
+      currentCmsData.adminUsers[index] = u;
+    }
+
+    saveCmsData(currentCmsData);
+    closeCmsModal();
+    renderUsersList();
+  };
+};
 

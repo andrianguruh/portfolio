@@ -40,8 +40,37 @@
 </head>
 <body class="bg-[#0f172a] text-slate-100 antialiased min-h-screen flex flex-col font-sans">
 
-  <!-- CMS Header Bar -->
-  <header class="sticky top-0 z-40 bg-slate-900 border-b-2 border-slate-700 px-6 py-4 shadow-md">
+  <!-- CMS Login Overlay -->
+  <div id="cms-login" class="flex-1 flex items-center justify-center p-4">
+    <div class="w-full max-w-md bg-slate-900 border-2 border-slate-700 rounded-3xl shadow-offset p-8 space-y-6">
+      <div class="text-center space-y-2">
+        <div class="w-16 h-16 rounded-2xl bg-amber-400 border-2 border-slate-950 font-extrabold flex items-center justify-center text-slate-950 font-heading text-2xl shadow-sm mx-auto mb-4">
+          CMS
+        </div>
+        <h2 class="text-2xl font-extrabold text-white font-heading">Admin Login</h2>
+        <p class="text-xs text-slate-400">Enter your credentials to manage portfolio content.</p>
+      </div>
+      <form id="cms-login-form" class="space-y-4">
+        <div>
+          <label for="login-username" class="block text-xs font-bold text-slate-300 uppercase tracking-wider mb-1.5">Username</label>
+          <input type="text" id="login-username" required class="w-full px-4 py-3 rounded-xl bg-slate-800 border-2 border-slate-700 text-white placeholder-slate-500 text-sm focus:outline-none focus:border-amber-400">
+        </div>
+        <div>
+          <label for="login-password" class="block text-xs font-bold text-slate-300 uppercase tracking-wider mb-1.5">Password</label>
+          <input type="password" id="login-password" required class="w-full px-4 py-3 rounded-xl bg-slate-800 border-2 border-slate-700 text-white placeholder-slate-500 text-sm focus:outline-none focus:border-amber-400">
+        </div>
+        <!-- Inline error message -->
+        <div id="login-error-msg" class="hidden px-4 py-3 rounded-xl bg-rose-950/60 border border-rose-700/60 text-rose-300 text-xs font-bold text-center"></div>
+        <button type="submit" class="w-full py-4 rounded-xl font-extrabold text-sm text-slate-950 bg-amber-400 hover:bg-amber-300 border-2 border-slate-950 shadow-offset font-heading transition-all mt-4">
+          Secure Login ✦
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <div id="cms-app" class="hidden flex-1 flex flex-col">
+    <!-- CMS Header Bar -->
+    <header class="sticky top-0 z-40 bg-slate-900 border-b-2 border-slate-700 px-6 py-4 shadow-md">
     <div class="max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-4">
       
       <!-- Brand & Admin Title -->
@@ -57,12 +86,16 @@
 
       <!-- Quick Action Controls -->
       <div class="flex flex-wrap items-center gap-3">
-        <a id="view-live-btn" href="http://localhost:8765/index.html" target="_blank" onclick="window.open('http://localhost:8765/index.html', '_blank'); return false;" class="px-4 py-2 rounded-xl text-xs font-extrabold text-slate-950 bg-amber-400 border-2 border-slate-950 shadow-sm font-heading hover:bg-amber-300 transition-all flex items-center gap-1.5">
+        <a id="view-live-btn" href="/index.html" target="_blank" onclick="window.open('/index.html', '_blank'); return false;" class="px-4 py-2 rounded-xl text-xs font-extrabold text-slate-950 bg-amber-400 border-2 border-slate-950 shadow-sm font-heading hover:bg-amber-300 transition-all flex items-center gap-1.5">
           <span>View Live Site ➔</span>
         </a>
 
         <button id="clear-cache-btn" class="px-3.5 py-2 rounded-xl text-xs font-bold text-amber-300 bg-slate-800 border-2 border-slate-700 hover:bg-slate-700 hover:text-amber-200 transition-all flex items-center gap-1.5" title="Purge browser cache, unregister service workers, and bust asset cache">
           🧹 Clear Cache
+        </button>
+
+        <button id="logout-btn" class="px-3.5 py-2 rounded-xl text-xs font-bold text-rose-400 bg-slate-800 border-2 border-slate-700 hover:bg-slate-700 hover:text-rose-300 transition-all flex items-center gap-1.5" title="Logout of CMS">
+          🔒 Logout
         </button>
 
         <!--
@@ -110,6 +143,9 @@
       <button class="cms-tab px-5 py-2.5 text-xs font-extrabold rounded-xl bg-slate-800 text-slate-300 font-heading transition-all flex items-center gap-2" data-tab="cms-leads">
         📥 Leads Form
         <span id="leads-new-badge" class="hidden px-1.5 py-0.5 rounded-full bg-rose-500 text-white text-[9px] font-extrabold leading-none">0</span>
+      </button>
+      <button class="cms-tab px-5 py-2.5 text-xs font-extrabold rounded-xl bg-slate-800 text-slate-300 font-heading transition-all" data-tab="cms-users">
+        🔐 User Management
       </button>
     </div>
 
@@ -350,15 +386,31 @@
         </div>
 
       </div>
+    <!-- Tab 7: User Management -->
+    <section id="cms-users" class="cms-section hidden space-y-6">
+      <div class="p-8 rounded-3xl bg-slate-900 border-2 border-slate-700 shadow-offset">
+        <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 mb-6">
+          <div>
+            <h2 class="text-xl font-extrabold text-white font-heading mb-1">🔐 User Management</h2>
+            <p class="text-xs text-slate-400">Manage admin credentials for the CMS.</p>
+          </div>
+          <button id="add-user-btn" onclick="openUserModalEditor(null)" class="px-4 py-2 rounded-xl text-xs font-bold text-slate-950 bg-amber-400 border-2 border-slate-950 hover:bg-amber-300 transition-all font-heading">
+            + Add New User
+          </button>
+        </div>
+        
+        <div id="users-cms-list"></div>
+      </div>
     </section>
 
   </main>
+  </div>
 
   <!-- Project Edit Modal -->
   <div id="cms-modal" class="hidden fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/80 backdrop-blur-md">
     <div class="w-full max-w-3xl" id="cms-modal-body"></div>
   </div>
 
-  <script src="./cms.js?v=20260915_v4"></script>
+  <script src="./cms.js?v=20260915_v5"></script>
 </body>
 </html>

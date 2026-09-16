@@ -392,6 +392,26 @@ const DEFAULT_PORTFOLIO_DATA = {
 // Deep Merge Helper to guarantee no null/undefined properties
 function getActivePortfolioData() {
   let merged = JSON.parse(JSON.stringify(DEFAULT_PORTFOLIO_DATA));
+
+  // Primary source: CMS-published data file (portfolio-data.js sets window.__PORTFOLIO_DATA__)
+  // This makes all browsers (incognito, mobile, etc.) show the same CMS content.
+  const diskData = window.__PORTFOLIO_DATA__;
+  if (diskData && typeof diskData === 'object' && Object.keys(diskData).length > 0) {
+    // Seed localStorage so subsequent loads are fast
+    try { localStorage.setItem('portfolio_cms_content', JSON.stringify(diskData)); } catch(e) {}
+    const p = diskData;
+    if (p.profile)    merged.profile    = Object.assign({}, merged.profile,  p.profile);
+    if (p.hero)       merged.hero       = Object.assign({}, merged.hero,      p.hero);
+    if (p.about)      merged.about      = Object.assign({}, merged.about,     p.about);
+    if (p.workflow    && Array.isArray(p.workflow)    && p.workflow.length    > 0) merged.workflow    = p.workflow;
+    if (p.navigation  && Array.isArray(p.navigation)  && p.navigation.length  > 0) merged.navigation  = p.navigation;
+    if (p.footer)     merged.footer     = Object.assign({}, merged.footer,    p.footer);
+    if (p.contact)    merged.contact    = Object.assign({}, merged.contact,   p.contact);
+    if (p.projects    && Array.isArray(p.projects)    && p.projects.length    > 0) merged.projects    = p.projects;
+    return merged;
+  }
+
+  // Fallback: localStorage (used when portfolio-data.js hasn't been published yet)
   const saved = localStorage.getItem('portfolio_cms_content');
   if (saved) {
     try {
@@ -450,7 +470,7 @@ function getAccentInfo(gradientClass) {
 const activeData = getActivePortfolioData();
 const PROJECTS_DATA = activeData.projects || DEFAULT_PORTFOLIO_DATA.projects;
 
-document.addEventListener('DOMContentLoaded', () => {
+function initPortfolioApp() {
   try {
     applyCmsOverrides(activeData);
   } catch (err) {
@@ -475,7 +495,7 @@ document.addEventListener('DOMContentLoaded', () => {
   } catch (err) {
     console.error("Contact form init error:", err);
   }
-});
+}
 
 /* Crash-Proof CMS State Overrides */
 function applyCmsOverrides(data) {
@@ -1028,6 +1048,13 @@ function initContactForm() {
   });
 }
 
+// Ensure the app initializes even if loaded dynamically after DOMContentLoaded
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', initPortfolioApp);
+} else {
+  initPortfolioApp();
+}
+
 /* PM Sprint Risk Calculator Playground Widget */
 function initSprintEstimatorWidget() {
   const teamSizeInput = document.getElementById('team-size-input');
@@ -1073,3 +1100,4 @@ function getIconSvg(iconName) {
   };
   return icons[iconName] || icons['landmark'];
 }
+
