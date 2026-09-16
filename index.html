@@ -115,13 +115,13 @@
       </a>
 
       <!-- Desktop Navigation Links -->
-      <nav id="desktop-nav" class="hidden md:flex items-center gap-6 text-xs font-bold text-slate-300">
-        <a href="#home" class="hover:text-amber-300 transition-colors py-1">Home</a>
-        <a href="#about" class="hover:text-amber-300 transition-colors py-1">About & Skills</a>
-        <a href="#workflow" class="hover:text-amber-300 transition-colors py-1">PM Workflow</a>
-        <a href="#projects" class="hover:text-amber-300 transition-colors py-1">Projects</a>
-        <a href="#playground" class="hover:text-amber-300 transition-colors py-1">Playground</a>
-        <a href="#contact" class="hover:text-amber-300 transition-colors py-1">Contact</a>
+      <nav id="desktop-nav" class="hidden md:flex items-center gap-2 text-xs font-bold text-slate-300">
+        <a href="#home" class="nav-link">Home</a>
+        <a href="#about" class="nav-link">About & Skills</a>
+        <a href="#workflow" class="nav-link">PM Workflow</a>
+        <a href="#projects" class="nav-link">Projects</a>
+        <a href="#playground" class="nav-link">Playground</a>
+        <a href="#contact" class="nav-link">Contact</a>
       </nav>
 
       <!-- Controls: Theme Switch & CTA -->
@@ -175,7 +175,7 @@
           var desktopNav = document.getElementById('desktop-nav');
           if (desktopNav && visibleItems.length > 0) {
             desktopNav.innerHTML = visibleItems.map(function(item) {
-              return '<a href="' + item.url + '" target="' + (item.target || '_self') + '" class="hover:text-amber-300 transition-colors py-1">' + item.label + '</a>';
+              return '<a href="' + item.url + '" target="' + (item.target || '_self') + '" class="nav-link">' + item.label + '</a>';
             }).join('');
           }
 

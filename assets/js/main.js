@@ -479,6 +479,7 @@ function initPortfolioApp() {
 
   try {
     initScrollReveals();
+    initScrollSpy();
     renderCanvasProjectCards(PROJECTS_DATA);
     initProjectFilters();
     initThemeToggle();
@@ -546,7 +547,7 @@ function applyCmsOverrides(data) {
       desktopNav.innerHTML = navItems
         .filter(item => item.visible !== false)
         .map(item => `
-          <a href="${item.url}" target="${item.target || '_self'}" class="hover:text-amber-300 transition-colors py-1">
+          <a href="${item.url}" target="${item.target || '_self'}" class="nav-link">
             ${item.label}
           </a>
         `).join('');
@@ -652,6 +653,28 @@ function initScrollReveals() {
   }, { threshold: 0.1 });
 
   revealElements.forEach(el => observer.observe(el));
+}
+
+/* Scroll Spy for Navigation */
+function initScrollSpy() {
+  const sections = document.querySelectorAll('section[id]');
+  
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        const id = entry.target.getAttribute('id');
+        const navLinks = document.querySelectorAll('.nav-link');
+        navLinks.forEach(link => {
+          link.classList.remove('active');
+          if (link.getAttribute('href') === `#${id}`) {
+            link.classList.add('active');
+          }
+        });
+      }
+    });
+  }, { threshold: 0.1, rootMargin: "-20% 0px -40% 0px" });
+
+  sections.forEach(section => observer.observe(section));
 }
 
 /* Render Scrapbook Canvas Cards */
