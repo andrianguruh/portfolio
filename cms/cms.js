@@ -391,78 +391,60 @@ const DEFAULT_PORTFOLIO_DATA = {
   ]
 };
 
-let currentCmsData = loadCmsData();
+// --- SUPABASE CONFIGURATION ---
+const SUPABASE_URL = 'https://noolviiyooqtehvpygqm.supabase.co';
+const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im5vb2x2aWl5b29xdGVodnB5Z3FtIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTAxNTAwNDQsImV4cCI6MjEwNTcyNjA0NH0.ydJggUjGQu3PgMnLAheRqDWl2_8tpN2HXUWOHghl1LY';
+const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
-function loadCmsData() {
+let currentCmsData = null;
+
+async function loadCmsData() {
   let merged = JSON.parse(JSON.stringify(DEFAULT_PORTFOLIO_DATA));
   
-  // 1. Try to load from window.__PORTFOLIO_DATA__ (which comes from portfolio-data.js)
-  if (window.__PORTFOLIO_DATA__ && typeof window.__PORTFOLIO_DATA__ === 'object') {
-    const published = window.__PORTFOLIO_DATA__;
-    if (published.profile) merged.profile = Object.assign({}, merged.profile, published.profile);
-    if (published.hero) merged.hero = Object.assign({}, merged.hero, published.hero);
-    if (published.about) merged.about = Object.assign({}, merged.about, published.about);
-    if (published.workflow && Array.isArray(published.workflow)) merged.workflow = published.workflow;
-    if (published.navigation && Array.isArray(published.navigation) && published.navigation.length > 0) merged.navigation = published.navigation;
-    if (published.footer) merged.footer = Object.assign({}, merged.footer, published.footer);
-    if (published.contact) merged.contact = Object.assign({}, merged.contact, published.contact);
-    if (published.projects && Array.isArray(published.projects) && published.projects.length > 0) merged.projects = published.projects;
-    if (published.adminUsers && Array.isArray(published.adminUsers)) merged.adminUsers = published.adminUsers;
+  try {
+    // 1. Fetch from Supabase directly
+    const { data, error } = await supabase.from('cms_state').select('data').eq('id', 1).single();
+    if (error && error.code !== 'PGRST116') {
+      console.error('Supabase fetch error:', error);
+    }
+    
+    // 2. If data exists, merge it over the default
+    if (data && data.data && typeof data.data === 'object') {
+      const published = data.data;
+      if (published.profile) merged.profile = Object.assign({}, merged.profile, published.profile);
+      if (published.hero) merged.hero = Object.assign({}, merged.hero, published.hero);
+      if (published.about) merged.about = Object.assign({}, merged.about, published.about);
+      if (published.workflow && Array.isArray(published.workflow)) merged.workflow = published.workflow;
+      if (published.navigation && Array.isArray(published.navigation) && published.navigation.length > 0) merged.navigation = published.navigation;
+      if (published.footer) merged.footer = Object.assign({}, merged.footer, published.footer);
+      if (published.contact) merged.contact = Object.assign({}, merged.contact, published.contact);
+      if (published.projects && Array.isArray(published.projects) && published.projects.length > 0) merged.projects = published.projects;
+      if (published.adminUsers && Array.isArray(published.adminUsers)) merged.adminUsers = published.adminUsers;
+      
+      // Seed local storage just in case for caching
+      localStorage.setItem('portfolio_cms_content', JSON.stringify(merged));
+    }
+  } catch (e) {
+    console.error('Failed to load from Supabase, trying localStorage', e);
   }
 
-  // 2. Override with localStorage if anything is newer locally (for live editing)
-  const saved = localStorage.getItem('portfolio_cms_content');
-  if (saved) {
-    try {
-      const parsed = JSON.parse(saved);
-      if (parsed && typeof parsed === 'object') {
-        if (parsed.profile) merged.profile = Object.assign({}, merged.profile, parsed.profile);
-        if (parsed.hero) merged.hero = Object.assign({}, merged.hero, parsed.hero);
-        if (parsed.about) merged.about = Object.assign({}, merged.about, parsed.about);
-        if (parsed.workflow && Array.isArray(parsed.workflow)) merged.workflow = parsed.workflow;
-        if (parsed.navigation && Array.isArray(parsed.navigation) && parsed.navigation.length > 0) {
-          merged.navigation = parsed.navigation;
-        }
-        if (parsed.footer) merged.footer = Object.assign({}, merged.footer, parsed.footer);
-        if (parsed.contact) merged.contact = Object.assign({}, merged.contact, parsed.contact);
-        if (parsed.projects && Array.isArray(parsed.projects) && parsed.projects.length > 0) {
-          merged.projects = parsed.projects;
-        }
-        if (parsed.customCategories && Array.isArray(parsed.customCategories)) {
-          merged.customCategories = parsed.customCategories;
-        }
-        if (parsed.adminUsers && Array.isArray(parsed.adminUsers)) {
-          merged.adminUsers = parsed.adminUsers;
-        }
-      }
-    } catch (e) { console.error(e); }
-  }
   return merged;
 }
 
-function saveCmsData(data) {
+async function saveCmsData(data) {
   currentCmsData = data;
-  // 1. Always save to localStorage for fast local reads
   localStorage.setItem('portfolio_cms_content', JSON.stringify(data));
   applyCmsHeaderBranding();
 
-  // 2. Also persist to disk via the local server API so ALL browsers see the same data
-  fetch('/api/save-data', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify(data)
-  })
-  .then(r => r.json())
-  .then(res => {
-    if (res.ok) {
-      showCmsToast('✅ Published to all browsers! Changes saved to disk. ✦');
-    } else {
-      showCmsToast('⚠ Saved locally only. Restart server.py for cross-browser sync.');
-    }
-  })
-  .catch(() => {
-    showCmsToast('⚠ Saved locally only. Run server.py for cross-browser sync.');
-  });
+  // Save to Supabase (Upsert row with id = 1)
+  const { error } = await supabase.from('cms_state').upsert({ id: 1, data: data });
+  
+  if (error) {
+    console.error('Supabase save error:', error);
+    showCmsToast('⚠ Failed to save to Supabase. Check console.');
+  } else {
+    showCmsToast('✅ Saved to Supabase! Changes are live. ✦');
+  }
 }
 
 function applyCmsHeaderBranding() {
@@ -501,9 +483,15 @@ function initCms() {
 }
 
 if (document.readyState === 'loading') {
-  document.addEventListener('DOMContentLoaded', checkAuthSession);
+  document.addEventListener('DOMContentLoaded', async () => {
+    currentCmsData = await loadCmsData();
+    checkAuthSession();
+  });
 } else {
-  checkAuthSession();
+  (async () => {
+    currentCmsData = await loadCmsData();
+    checkAuthSession();
+  })();
 }
 
 /* Tab Controller */

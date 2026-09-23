@@ -385,33 +385,46 @@ const DEFAULT_PORTFOLIO_DATA = {
         { label: 'Instant Quotes', value: '3,200+' },
         { label: 'Page Speed', value: '98/100' }
       ]
-    }
   ]
 };
 
+// --- SUPABASE CONFIGURATION ---
+const SUPABASE_URL = 'https://noolviiyooqtehvpygqm.supabase.co';
+const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im5vb2x2aWl5b29xdGVodnB5Z3FtIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTAxNTAwNDQsImV4cCI6MjEwNTcyNjA0NH0.ydJggUjGQu3PgMnLAheRqDWl2_8tpN2HXUWOHghl1LY';
+const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
 // Deep Merge Helper to guarantee no null/undefined properties
-function getActivePortfolioData() {
+async function getActivePortfolioData() {
   let merged = JSON.parse(JSON.stringify(DEFAULT_PORTFOLIO_DATA));
 
-  // Primary source: CMS-published data file (portfolio-data.js sets window.__PORTFOLIO_DATA__)
-  // This makes all browsers (incognito, mobile, etc.) show the same CMS content.
-  const diskData = window.__PORTFOLIO_DATA__;
-  if (diskData && typeof diskData === 'object' && Object.keys(diskData).length > 0) {
-    // Seed localStorage so subsequent loads are fast
-    try { localStorage.setItem('portfolio_cms_content', JSON.stringify(diskData)); } catch(e) {}
-    const p = diskData;
-    if (p.profile)    merged.profile    = Object.assign({}, merged.profile,  p.profile);
-    if (p.hero)       merged.hero       = Object.assign({}, merged.hero,      p.hero);
-    if (p.about)      merged.about      = Object.assign({}, merged.about,     p.about);
-    if (p.workflow    && Array.isArray(p.workflow)    && p.workflow.length    > 0) merged.workflow    = p.workflow;
-    if (p.navigation  && Array.isArray(p.navigation)  && p.navigation.length  > 0) merged.navigation  = p.navigation;
-    if (p.footer)     merged.footer     = Object.assign({}, merged.footer,    p.footer);
-    if (p.contact)    merged.contact    = Object.assign({}, merged.contact,   p.contact);
-    if (p.projects    && Array.isArray(p.projects)    && p.projects.length    > 0) merged.projects    = p.projects;
-    return merged;
+  try {
+    // 1. Fetch from Supabase directly
+    const { data, error } = await supabase.from('cms_state').select('data').eq('id', 1).single();
+    if (error && error.code !== 'PGRST116') {
+      console.error('Supabase fetch error:', error);
+    }
+    
+    // 2. If data exists, merge it over the default
+    if (data && data.data && typeof data.data === 'object') {
+      const p = data.data;
+      if (p.profile)    merged.profile    = Object.assign({}, merged.profile,  p.profile);
+      if (p.hero)       merged.hero       = Object.assign({}, merged.hero,      p.hero);
+      if (p.about)      merged.about      = Object.assign({}, merged.about,     p.about);
+      if (p.workflow    && Array.isArray(p.workflow)    && p.workflow.length    > 0) merged.workflow    = p.workflow;
+      if (p.navigation  && Array.isArray(p.navigation)  && p.navigation.length  > 0) merged.navigation  = p.navigation;
+      if (p.footer)     merged.footer     = Object.assign({}, merged.footer,    p.footer);
+      if (p.contact)    merged.contact    = Object.assign({}, merged.contact,   p.contact);
+      if (p.projects    && Array.isArray(p.projects)    && p.projects.length    > 0) merged.projects    = p.projects;
+      
+      // Cache it
+      localStorage.setItem('portfolio_cms_content', JSON.stringify(merged));
+      return merged;
+    }
+  } catch (e) {
+    console.error('Failed to load from Supabase, trying localStorage', e);
   }
 
-  // Fallback: localStorage (used when portfolio-data.js hasn't been published yet)
+  // Fallback: localStorage
   const saved = localStorage.getItem('portfolio_cms_content');
   if (saved) {
     try {
@@ -420,21 +433,13 @@ function getActivePortfolioData() {
         if (parsed.profile) merged.profile = Object.assign({}, merged.profile, parsed.profile);
         if (parsed.hero) merged.hero = Object.assign({}, merged.hero, parsed.hero);
         if (parsed.about) merged.about = Object.assign({}, merged.about, parsed.about);
-        if (parsed.workflow && Array.isArray(parsed.workflow) && parsed.workflow.length > 0) {
-          merged.workflow = parsed.workflow;
-        }
-        if (parsed.navigation && Array.isArray(parsed.navigation) && parsed.navigation.length > 0) {
-          merged.navigation = parsed.navigation;
-        }
+        if (parsed.workflow && Array.isArray(parsed.workflow) && parsed.workflow.length > 0) merged.workflow = parsed.workflow;
+        if (parsed.navigation && Array.isArray(parsed.navigation) && parsed.navigation.length > 0) merged.navigation = parsed.navigation;
         if (parsed.footer) merged.footer = Object.assign({}, merged.footer, parsed.footer);
         if (parsed.contact) merged.contact = Object.assign({}, merged.contact, parsed.contact);
-        if (parsed.projects && Array.isArray(parsed.projects) && parsed.projects.length > 0) {
-          merged.projects = parsed.projects;
-        }
+        if (parsed.projects && Array.isArray(parsed.projects) && parsed.projects.length > 0) merged.projects = parsed.projects;
       }
-    } catch (e) {
-      console.error("Error parsing saved CMS data:", e);
-    }
+    } catch (e) { console.error(e); }
   }
   return merged;
 }
@@ -467,10 +472,13 @@ function getAccentInfo(gradientClass) {
   return fallback;
 }
 
-const activeData = getActivePortfolioData();
-const PROJECTS_DATA = activeData.projects || DEFAULT_PORTFOLIO_DATA.projects;
+let activeData = null;
+let PROJECTS_DATA = null;
 
-function initPortfolioApp() {
+async function initPortfolioApp() {
+  activeData = await getActivePortfolioData();
+  PROJECTS_DATA = activeData.projects || DEFAULT_PORTFOLIO_DATA.projects;
+
   try {
     applyCmsOverrides(activeData);
   } catch (err) {

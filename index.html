@@ -10,6 +10,8 @@
 
   <!-- Tailwind CSS CDN -->
   <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Supabase JS CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script>
     tailwind.config = {
       darkMode: ['selector', '[data-theme="dark"]'],
@@ -669,26 +671,13 @@
     </div>
   </div>
 
-  <!-- CMS Published Data & Main Logic Loader -->
+  <!-- Main Logic Loader -->
   <script>
     (function () {
       var ver = localStorage.getItem('portfolio_cache_version') || '6';
-
-      function loadMainJs() {
-        var s = document.createElement('script');
-        s.src = './assets/js/main.js?v=' + ver;
-        document.body.appendChild(s);
-      }
-
-      // 1. Try to load the published CMS data file first
-      var dataScript = document.createElement('script');
-      dataScript.src = './portfolio-data.js?t=' + Date.now();
-
-      // 2. Once data succeeds or fails (404), load main.js safely
-      dataScript.onload = loadMainJs;
-      dataScript.onerror = loadMainJs;
-
-      document.body.appendChild(dataScript);
+      var s = document.createElement('script');
+      s.src = './assets/js/main.js?v=' + ver;
+      document.body.appendChild(s);
     })();
   </script>
   <script>
