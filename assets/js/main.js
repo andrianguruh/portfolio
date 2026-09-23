@@ -391,7 +391,7 @@ const DEFAULT_PORTFOLIO_DATA = {
 // --- SUPABASE CONFIGURATION ---
 const SUPABASE_URL = 'https://noolviiyooqtehvpygqm.supabase.co';
 const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im5vb2x2aWl5b29xdGVodnB5Z3FtIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTAxNTAwNDQsImV4cCI6MjEwNTcyNjA0NH0.ydJggUjGQu3PgMnLAheRqDWl2_8tpN2HXUWOHghl1LY';
-const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+const supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
 // Deep Merge Helper to guarantee no null/undefined properties
 async function getActivePortfolioData() {
@@ -399,7 +399,7 @@ async function getActivePortfolioData() {
 
   try {
     // 1. Fetch from Supabase directly
-    const { data, error } = await supabase.from('cms_state').select('data').eq('id', 1).single();
+    const { data, error } = await supabaseClient.from('cms_state').select('data').eq('id', 1).single();
     if (error && error.code !== 'PGRST116') {
       console.error('Supabase fetch error:', error);
     }
