@@ -1043,12 +1043,12 @@ function showToast(message) {
   }, 3000);
 }
 
-/* Contact Form — Save as Lead to localStorage */
+/* Contact Form — Save as Lead to Supabase */
 function initContactForm() {
   const form = document.getElementById('contact-form');
   if (!form) return;
 
-  form.addEventListener('submit', (e) => {
+  form.addEventListener('submit', async (e) => {
     e.preventDefault();
 
     const nameInput = form.querySelector('#name');
@@ -1064,19 +1064,17 @@ function initContactForm() {
       submittedAt: new Date().toISOString()
     };
 
-    // Load existing leads, append, and save
-    let leads = [];
     try {
-      const saved = localStorage.getItem('portfolio_leads');
-      if (saved) leads = JSON.parse(saved);
-      if (!Array.isArray(leads)) leads = [];
-    } catch (err) { leads = []; }
-
-    leads.unshift(lead); // newest first
-    localStorage.setItem('portfolio_leads', JSON.stringify(leads));
-
-    showToast('Message sent! I read every single message ✦');
-    form.reset();
+      const { error } = await supabaseClient.from('cms_leads').insert([lead]);
+      if (error) {
+        throw error;
+      }
+      showToast('Message sent! I read every single message ✦');
+      form.reset();
+    } catch (err) {
+      console.error('Failed to submit lead to Supabase', err);
+      showToast('Error sending message. Please try again.');
+    }
   });
 }
 

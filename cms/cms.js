@@ -1794,43 +1794,61 @@ function escapeHtml(str) {
 
 let leadsCurrentFilter = 'all';
 
-function loadLeads() {
+async function loadLeads() {
   try {
-    const raw = localStorage.getItem('portfolio_leads');
-    if (!raw) return [];
-    const parsed = JSON.parse(raw);
-    return Array.isArray(parsed) ? parsed : [];
-  } catch (e) { return []; }
+    const { data, error } = await supabaseClient
+      .from('cms_leads')
+      .select('*')
+      .order('submittedAt', { ascending: false });
+    
+    if (error) throw error;
+    return data || [];
+  } catch (e) {
+    console.error('Error fetching leads:', e);
+    return [];
+  }
 }
 
 function saveLeads(leads) {
   localStorage.setItem('portfolio_leads', JSON.stringify(leads));
 }
 
-function updateLeadStatus(leadId, newStatus) {
-  const leads = loadLeads();
-  const lead = leads.find(l => l.id === leadId);
-  if (lead) {
-    lead.status = newStatus;
-    saveLeads(leads);
-    renderLeadsPanel();
-    updateLeadsNavBadge();
+async function updateLeadStatus(leadId, newStatus) {
+  try {
+    const { error } = await supabaseClient
+      .from('cms_leads')
+      .update({ status: newStatus })
+      .eq('id', leadId);
+    
+    if (error) throw error;
+    await renderLeadsPanel();
+    await updateLeadsNavBadge();
+  } catch (e) {
+    console.error('Error updating lead status:', e);
   }
 }
 
 window.updateLeadStatus = updateLeadStatus;
 
-function deleteLead(leadId) {
+async function deleteLead(leadId) {
   if (!confirm('Delete this lead permanently?')) return;
-  const leads = loadLeads().filter(l => l.id !== leadId);
-  saveLeads(leads);
-  renderLeadsPanel();
-  updateLeadsNavBadge();
+  try {
+    const { error } = await supabaseClient
+      .from('cms_leads')
+      .delete()
+      .eq('id', leadId);
+    
+    if (error) throw error;
+    await renderLeadsPanel();
+    await updateLeadsNavBadge();
+  } catch (e) {
+    console.error('Error deleting lead:', e);
+  }
 }
 
 window.deleteLead = deleteLead;
 
-function toggleLeadMessage(leadId) {
+async function toggleLeadMessage(leadId) {
   const el = document.getElementById('lead-msg-' + leadId);
   const btn = document.getElementById('lead-msg-btn-' + leadId);
   if (!el) return;
@@ -1840,20 +1858,27 @@ function toggleLeadMessage(leadId) {
 
   // Auto-mark as read when expanded
   if (isHidden) {
-    const leads = loadLeads();
-    const lead = leads.find(l => l.id === leadId);
-    if (lead && lead.status === 'new') {
-      lead.status = 'read';
-      saveLeads(leads);
-      updateLeadsNavBadge();
-      // refresh the status selector in-place
-      const sel = document.getElementById('status-sel-' + leadId);
-      if (sel) sel.value = 'read';
-      // Update the status pill
-      const pill = document.getElementById('status-pill-' + leadId);
-      if (pill) {
-        pill.className = 'status-pill px-2.5 py-1 rounded-full text-[10px] font-extrabold border ' + statusPillClass('read');
-        pill.textContent = statusLabel('read');
+    // Only update if it currently is new
+    const sel = document.getElementById('status-sel-' + leadId);
+    if (sel && sel.value === 'new') {
+      try {
+        const { error } = await supabaseClient
+          .from('cms_leads')
+          .update({ status: 'read' })
+          .eq('id', leadId);
+        
+        if (error) throw error;
+        await updateLeadsNavBadge();
+        // refresh the status selector in-place
+        sel.value = 'read';
+        // Update the status pill
+        const pill = document.getElementById('status-pill-' + leadId);
+        if (pill) {
+          pill.className = 'status-pill px-2.5 py-1 rounded-full text-[10px] font-extrabold border ' + statusPillClass('read');
+          pill.textContent = statusLabel('read');
+        }
+      } catch (e) {
+        console.error('Error auto-marking lead as read:', e);
       }
     }
   }
@@ -1879,8 +1904,8 @@ function statusLabel(status) {
   }
 }
 
-function updateLeadsNavBadge() {
-  const leads = loadLeads();
+async function updateLeadsNavBadge() {
+  const leads = await loadLeads();
   const newCount = leads.filter(l => !l.status || l.status === 'new').length;
   const badge = document.getElementById('leads-new-badge');
   if (!badge) return;
@@ -1892,11 +1917,12 @@ function updateLeadsNavBadge() {
   }
 }
 
-function renderLeadsPanel() {
+async function renderLeadsPanel() {
   const container = document.getElementById('leads-table-container');
   if (!container) return;
 
-  const allLeads = loadLeads().map(l => ({
+  const fetchedLeads = await loadLeads();
+  const allLeads = fetchedLeads.map(l => ({
     ...l,
     status: l.status || 'new'  // default untagged leads to 'new'
   }));
@@ -1934,24 +1960,32 @@ function renderLeadsPanel() {
 
     // Refresh button
     const refreshBtn = document.getElementById('leads-refresh-btn');
-    if (refreshBtn) refreshBtn.onclick = () => { renderLeadsPanel(); updateLeadsNavBadge(); };
+    if (refreshBtn) refreshBtn.onclick = async () => { await renderLeadsPanel(); await updateLeadsNavBadge(); };
 
     // Clear all read button
     const clearReadBtn = document.getElementById('leads-clear-read-btn');
     if (clearReadBtn) {
-      clearReadBtn.onclick = () => {
+      clearReadBtn.onclick = async () => {
         if (!confirm('Delete all leads with "Read" status?')) return;
-        const remaining = loadLeads().filter(l => (l.status || 'new') !== 'read');
-        saveLeads(remaining);
-        renderLeadsPanel();
-        updateLeadsNavBadge();
+        try {
+          const { error } = await supabaseClient
+            .from('cms_leads')
+            .delete()
+            .eq('status', 'read');
+          
+          if (error) throw error;
+          await renderLeadsPanel();
+          await updateLeadsNavBadge();
+        } catch (e) {
+          console.error('Failed to clear read leads', e);
+        }
       };
     }
 
     // Inject test lead button
     const injectBtn = document.getElementById('leads-inject-btn');
     if (injectBtn) {
-      injectBtn.onclick = () => {
+      injectBtn.onclick = async () => {
         const names = ['Sarah Jenkins', 'Ahmad Fauzi', 'Budi Santoso', 'Jessica Tan', 'Reza Putra'];
         const domains = ['gmail.com', 'company.com', 'startup.io', 'corp.id'];
         const messages = [
@@ -1970,12 +2004,15 @@ function renderLeadsPanel() {
           status: 'new',
           submittedAt: new Date().toISOString()
         };
-        const leads = loadLeads();
-        leads.unshift(testLead);
-        saveLeads(leads);
-        renderLeadsPanel();
-        updateLeadsNavBadge();
-        showCmsToast('Test lead injected! ✦');
+        try {
+          const { error } = await supabaseClient.from('cms_leads').insert([testLead]);
+          if (error) throw error;
+          await renderLeadsPanel();
+          await updateLeadsNavBadge();
+          showCmsToast('Test lead injected! ✦');
+        } catch (e) {
+          console.error('Failed to inject test lead', e);
+        }
       };
     }
   }
