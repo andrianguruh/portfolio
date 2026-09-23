@@ -395,6 +395,22 @@ let currentCmsData = loadCmsData();
 
 function loadCmsData() {
   let merged = JSON.parse(JSON.stringify(DEFAULT_PORTFOLIO_DATA));
+  
+  // 1. Try to load from window.__PORTFOLIO_DATA__ (which comes from portfolio-data.js)
+  if (window.__PORTFOLIO_DATA__ && typeof window.__PORTFOLIO_DATA__ === 'object') {
+    const published = window.__PORTFOLIO_DATA__;
+    if (published.profile) merged.profile = Object.assign({}, merged.profile, published.profile);
+    if (published.hero) merged.hero = Object.assign({}, merged.hero, published.hero);
+    if (published.about) merged.about = Object.assign({}, merged.about, published.about);
+    if (published.workflow && Array.isArray(published.workflow)) merged.workflow = published.workflow;
+    if (published.navigation && Array.isArray(published.navigation) && published.navigation.length > 0) merged.navigation = published.navigation;
+    if (published.footer) merged.footer = Object.assign({}, merged.footer, published.footer);
+    if (published.contact) merged.contact = Object.assign({}, merged.contact, published.contact);
+    if (published.projects && Array.isArray(published.projects) && published.projects.length > 0) merged.projects = published.projects;
+    if (published.adminUsers && Array.isArray(published.adminUsers)) merged.adminUsers = published.adminUsers;
+  }
+
+  // 2. Override with localStorage if anything is newer locally (for live editing)
   const saved = localStorage.getItem('portfolio_cms_content');
   if (saved) {
     try {
