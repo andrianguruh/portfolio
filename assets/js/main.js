@@ -385,6 +385,7 @@ const DEFAULT_PORTFOLIO_DATA = {
         { label: 'Instant Quotes', value: '3,200+' },
         { label: 'Page Speed', value: '98/100' }
       ]
+    }
   ]
 };
 
